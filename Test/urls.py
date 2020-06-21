@@ -16,6 +16,30 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
+from django.http import HttpResponse
+
+def homepage(request):
+    return HttpResponse('Home Page')
+
+def custlogin(request):
+    return HttpResponse('Login Page for Customer')
+
+def merchlogin(request):
+    return HttpResponse('Login Page for Merchant')
+
+def custsignup(request):
+    return HttpResponse('SignUp Page for Customer')
+
+def merchsignup(request):
+    return HttpResponse('SignUp Page for Merchant')
+
+
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', homepage),
+    path('custlogin/', custlogin),
+    path('custsignup/', custsignup),
+    path('merchlogin/', merchlogin),
+    path('merchsignup/', merchsignup),
+    
 ]
