@@ -17,9 +17,17 @@ from django.contrib import admin
 from django.urls import path
 
 from django.http import HttpResponse
+from django.shortcuts import render
 
 def homepage(request):
-    return HttpResponse('Home Page')
+    return render(request, 'index.html')
+    # return HttpResponse('Home Page')
+
+def login(request):
+    return render(request, 'log-in.html')
+
+def signup(request):
+    return render(request, 'sign-up.html')
 
 def custlogin(request):
     return HttpResponse('Login Page for Customer')
@@ -37,6 +45,7 @@ def merchsignup(request):
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', homepage),
+    path('login/', login),
     path('custlogin/', custlogin),
     path('custsignup/', custsignup),
     path('merchlogin/', merchlogin),
