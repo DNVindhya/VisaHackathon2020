@@ -41,6 +41,21 @@ def custsignup(request):
 def merchsignup(request):
     return HttpResponse('SignUp Page for Merchant')
 
+def merchdashboard(request):
+    return render(request, 'merch_dashboard.html')
+
+def merchcustomers(request):
+    return render(request, 'merch_customers.html')
+
+def merchorders(request):
+    return render(request, 'merch_orders.html')
+
+def merchproducts(request):
+    return render(request, 'merch_products.html')
+
+def merchreport(request):
+    return render(request, 'merch_report.html')
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -52,6 +67,11 @@ urlpatterns = [
     path('custsignup/', custsignup),
     path('merchlogin/', merchlogin),
     path('merchsignup/', merchsignup),
+    path('merchdashboard/', merchdashboard),
+    path('merchcustomers/', merchcustomers),
+    path('merchorders/', merchorders),
+    path('merchproducts/', merchproducts),
+    path('merchreport/', merchreport),
     
 ]
 
