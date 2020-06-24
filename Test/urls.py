@@ -24,10 +24,10 @@ def homepage(request):
     # return HttpResponse('Home Page')
 
 def login(request):
-    return render(request, 'log-in.html')
+    return render(request, 'log_in.html')
 
 def signup(request):
-    return render(request, 'sign-up.html')
+    return render(request, 'sign_up.html')
 
 def custlogin(request):
     return HttpResponse('Login Page for Customer')
