@@ -45,7 +45,9 @@ def merchsignup(request):
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', homepage),
+    path('index/', homepage),
     path('login/', login),
+    path('signup/', signup),
     path('custlogin/', custlogin),
     path('custsignup/', custsignup),
     path('merchlogin/', merchlogin),
