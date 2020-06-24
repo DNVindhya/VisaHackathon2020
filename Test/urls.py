@@ -41,10 +41,14 @@ def custsignup(request):
 def merchsignup(request):
     return HttpResponse('SignUp Page for Merchant')
 
+def merchhome(request):
+    return render(request, 'merchant_home.html')
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', homepage),
+    path('merchant_home/', merchhome),
     path('index/', homepage),
     path('login/', login),
     path('signup/', signup),
