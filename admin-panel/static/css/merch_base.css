@@ -1,0 +1,18 @@
+.navbar {
+    background-color: #1A1F71;
+}
+
+.navbar-logo-image {
+    height: 40px;
+    width: 115px;
+    margin-left: 10px;
+}
+
+.nav-link-signout {
+    color: white;
+}
+
+.text-primary {
+    color: #1A1F71 !important;
+    font-size: x-large;
+}
