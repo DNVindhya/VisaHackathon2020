@@ -15,9 +15,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from django.conf import settings
 
 from django.http import HttpResponse
 from django.shortcuts import render
+
+from django.conf.urls.static import static
 
 def homepage(request):
     return render(request, 'index.html')
@@ -28,6 +31,9 @@ def login(request):
 
 def signup(request):
     return render(request, 'sign_up.html')
+
+def custwallet(request):
+    return render(request, 'wallet.html')
 
 def custlogin(request):
     return HttpResponse('Login Page for Customer')
@@ -42,6 +48,7 @@ def merchsignup(request):
     return HttpResponse('SignUp Page for Merchant')
 
 
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', homepage),
@@ -52,7 +59,8 @@ urlpatterns = [
     path('custsignup/', custsignup),
     path('merchlogin/', merchlogin),
     path('merchsignup/', merchsignup),
+    path('wallet/', custwallet),
     
-]
+]+ static(settings.STATIC_URL)
 
 
