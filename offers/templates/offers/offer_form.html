@@ -1,0 +1,7 @@
+{% extends 'offers/main.html' %}
+{% block content %}
+<form action="" method="POST">{% csrf_token %}
+	{{form}}
+	<input type="submit" name="submit">
+</form>
+{% endblock content %}
