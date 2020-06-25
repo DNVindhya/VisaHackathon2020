@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    
+    <!-- META TAG PLACEHOLDER -->	
+    {% block html_head %}{% endblock %}
+        
+    <!-- Styles -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700&display=swap&subset=latin-ext" rel="stylesheet">
+    <link href="{% static 'css/bootstrap.css' %}" rel="stylesheet">
+    <link href="{% static 'css/fontawesome-all.css' %}" rel="stylesheet">
+    <link href="{% static 'css/swiper.css' %}" rel="stylesheet">
+	<link href="{% static 'css/magnific-popup.css' %}" rel="stylesheet">
+    <link href="{% static 'css/styles.css' %}" rel="stylesheet">
+    <link href="{% static 'css/merch_base.css' %}" rel="stylesheet">
+	
+	<!-- Favicon  -->
+  <link rel="shortcut icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon">
+  <link rel="icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon">
+</head>
+
+<body>
+        <div class="d-flex flex-column flex-md-row align-items-center px-md-4 border-bottom shadow-sm navbar">
+                <h5 class="my-0 mr-md-auto font-weight-normal"><a class="navbar-brand logo-image" href="/index"><img class="navbar-logo-image" src="{% static 'images/white-icon.png' %}" alt="alternative"/></a></h5>
+                <nav class="my-2 my-md-0 mr-md-3">
+                  <a class="p-2 text-light" href="#">Account</a>
+                </nav>
+                <a class="btn btn-outline-light" href="#">Log Out</a>
+              </div>
+    <!--nav class="navbar fixed-top flex-md-nowrap p-0 shadow">
+        <a class="navbar-brand logo-image" href="/index"><img class="navbar-logo-image" src="{% static 'images/white-icon.png' %}" alt="alternative"></a>
+        <ul class="navbar-nav px-3">
+                <li class="nav-item text-nowrap">
+                  <a class="nav-link-signout" href="#">Account</a>
+                </li>
+              </ul>
+        <ul class="navbar-nav px-3">
+        <li class="nav-item text-nowrap">
+          <a class="nav-link-signout" href="#">Sign out</a>
+        </li>
+      </ul>
+    </nav-->
+
+    <div class="container-fluid">
+      <div class="row">
+        <nav class="col-md-2 d-none d-md-block bg-light sidebar">
+          <div class="sidebar-sticky">
+            <ul class="nav flex-column" style="height: 1000px;">
+              <li class="nav-item">
+                <a class="nav-link active" href="/merchdashboard">
+                  <span data-feather="user-check"></span>
+                  Earn Points <span class="sr-only">(current)</span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/merchorders">
+                  <span data-feather="unlock"></span>
+                  Avail Offers
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/merchproducts">
+                  <span data-feather="credit-card"></span>
+                  My Wallet
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/merchcustomers">
+                  <span data-feather="file"></span>
+                  Orders
+                </a>
+              </li>
+            </ul>
+          </div>
+        </nav>
+
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+            {% block content %}{% endblock %}
+        </main>
+      </div>
+    </div>
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="{% static 'js/jquery.min.js' %}"></script> <!-- jQuery for Bootstrap's JavaScript plugins -->
+    <script src="{% static 'js/popper.min.js' %}"></script> <!-- Popper tooltip library for Bootstrap -->
+    <script src="{% static 'js/bootstrap.min.js' %}"></script> <!-- Bootstrap framework -->
+    <script src="{% static 'js/jquery.easing.min.js' %}"></script> <!-- jQuery Easing for smooth scrolling between anchors -->
+    <script src="{% static 'js/swiper.min.js' %}"></script> <!-- Swiper for image and text sliders -->
+    <script src="{% static 'js/jquery.magnific-popup.js' %}"></script> <!-- Magnific Popup for lightboxes -->
+    <script src="{% static 'js/validator.min.js' %}"></script> <!-- Validator.js - Bootstrap plugin that validates forms -->
+    <script src="{% static 'js/scripts.js' %}"></script> <!-- Custom scripts -->
+
+    <!-- Icons -->
+    <script src="https://unpkg.com/feather-icons/dist/feather.min.js"></script>
+    <script>
+      feather.replace()
+    </script>
+
+    {% block scripts %}{% endblock %}
+
+  </body>
+</html>

@@ -41,6 +41,18 @@ def custsignup(request):
 def merchsignup(request):
     return HttpResponse('SignUp Page for Merchant')
 
+def consearn(request):
+    return render(request, 'consumers/cons_earn.html')
+
+def consavail(request):
+    return render(request, 'consumers/cons_avail.html')
+
+def conswallet(request):
+    return render(request, 'consumers/cons_wallet.html')
+
+def consorders(request):
+    return render(request, 'consumers/cons_orders.html')
+
 def merchdashboard(request):
     return render(request, 'merchants/merch_dashboard.html')
 
@@ -74,7 +86,10 @@ urlpatterns = [
     path('merchorders/', merchorders),
     path('merchproducts/', merchproducts),
     path('merchreport/', merchreport),
-    
+    path('consearn/', consearn),
+    path('consavail/', consavail),
+    path('conswallet/', conswallet),
+    path('consorders/', consorders),
 ]
 
 
