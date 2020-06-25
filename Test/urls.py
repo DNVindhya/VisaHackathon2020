@@ -68,6 +68,7 @@ urlpatterns = [
     path('merchlogin/', merchlogin),
     path('merchsignup/', merchsignup),
     path('offers/',include('offers.urls')),
+    path('customer/',include('karmapoints.urls')),
     path('merchdashboard/', merchdashboard),
     path('merchcustomers/', merchcustomers),
     path('merchorders/', merchorders),
