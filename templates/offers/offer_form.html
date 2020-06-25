@@ -1,0 +1,23 @@
+{% extends 'offers/main.html' %}
+{% block content %}
+    <h2>Offers</h2>
+
+		<div class="box-element product">
+			<h6><strong>Offer ID: </strong>{{offer.id}}</h6>
+			<h6><strong>Karma Points: </strong>{{offer.karma_points_required}}</h6>
+			<h6><strong>Percentage Off: </strong>{{offer.percentage_off}}</h6>
+			<h6><strong>Offer Start Date: </strong>{{offer.offer_start_date}}</h6>
+			<h6><strong>Offer Valid Days: </strong>{{offer.days_valid}}</h6>
+		</div>
+
+
+
+
+<form action="" method="POST">
+	{% csrf_token %}
+	    <table>
+	    	{{ form.as_table }}
+	    </table>
+	<input type="submit" name="submit">
+</form>
+{% endblock content %}

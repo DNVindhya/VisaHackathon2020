@@ -5,12 +5,12 @@ from django.db import models
 class Consumer(models.Model):
     first_name = models.CharField(max_length = 100, null = True)
     last_name = models.CharField(max_length = 100, null = True)
-    contact_number = models.IntegerField(max_length = 11, null = True)
+    contact_number = models.IntegerField(null = True)
     email = models.EmailField(max_length = 100, null = True)
     password = models.CharField(max_length = 100, null = True)
     address = models.CharField(max_length = 200, null = True)
     current_karma_points = models.IntegerField(null = True)
-    card_details = models.IntegerField(max_length = 16, null = True)
+    card_details = models.IntegerField(null = True)
     date_created = models.DateTimeField(auto_now_add= True, null = True)
 
     def __str__(self):

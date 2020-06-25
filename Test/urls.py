@@ -14,20 +14,20 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path,include
 
 from django.http import HttpResponse
 from django.shortcuts import render
 
 def homepage(request):
-    return render(request, 'index.html')
+    return render(request, 'landing/index.html')
     # return HttpResponse('Home Page')
 
 def login(request):
-    return render(request, 'log_in.html')
+    return render(request, 'landing/log_in.html')
 
 def signup(request):
-    return render(request, 'sign_up.html')
+    return render(request, 'landing/sign_up.html')
 
 def custlogin(request):
     return HttpResponse('Login Page for Customer')
@@ -42,19 +42,19 @@ def merchsignup(request):
     return HttpResponse('SignUp Page for Merchant')
 
 def merchdashboard(request):
-    return render(request, 'merch_dashboard.html')
+    return render(request, 'merchants/merch_dashboard.html')
 
 def merchcustomers(request):
-    return render(request, 'merch_customers.html')
+    return render(request, 'merchants/merch_customers.html')
 
 def merchorders(request):
-    return render(request, 'merch_orders.html')
+    return render(request, 'merchants/merch_orders.html')
 
 def merchproducts(request):
-    return render(request, 'merch_products.html')
+    return render(request, 'merchants/merch_products.html')
 
 def merchreport(request):
-    return render(request, 'merch_report.html')
+    return render(request, 'merchants/merch_report.html')
 
 
 urlpatterns = [
@@ -67,6 +67,8 @@ urlpatterns = [
     path('custsignup/', custsignup),
     path('merchlogin/', merchlogin),
     path('merchsignup/', merchsignup),
+    path('offers/',include('offers.urls')),
+    path('customer/',include('karmapoints.urls')),
     path('merchdashboard/', merchdashboard),
     path('merchcustomers/', merchcustomers),
     path('merchorders/', merchorders),
