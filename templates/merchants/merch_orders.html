@@ -5,6 +5,33 @@
     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
         <h1 class="h2">Orders</h1>
     </div>
+
+    <div id="offers-list">
+        <table class="table">
+        <thead class="thead-light">
+            <tr>
+            <th scope="col">Order Id</th>
+            <th scope="col">Date</th>
+            <th scope="col">Amount</th>
+            <th scope="col">Discount</th>
+            <th scope="col">Karma Points Availed</th>
+            <th scope="col">Karma Points Earned</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for order in orders %}
+            <tr>
+                <td>{{order.id}}</td>
+                <td>{{order.order_date}}</td>
+                <td>{{order.order_amount}}</td>
+                <td>{{order.discount_amount}}</td>
+                <td>{{order.karma_points_used}}</td>
+                <td>{{order.karma_points_earned}}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+        </table>
+    </div>
         
 {% endblock %}
 

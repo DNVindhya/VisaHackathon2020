@@ -19,6 +19,9 @@ from django.urls import path,include
 from django.http import HttpResponse
 from django.shortcuts import render
 
+from offers.views import get_offers
+from karmapoints.views import get_orders
+
 def homepage(request):
     return render(request, 'landing/index.html')
     # return HttpResponse('Home Page')
@@ -42,16 +45,12 @@ def merchsignup(request):
     return HttpResponse('SignUp Page for Merchant')
 
 def merchdashboard(request):
-    return render(request, 'merchants/merch_dashboard.html')
-
-def merchcustomers(request):
-    return render(request, 'merchants/merch_customers.html')
+    all_offers = get_offers(request)
+    return render(request, 'merchants/merch_dashboard.html', all_offers)
 
 def merchorders(request):
-    return render(request, 'merchants/merch_orders.html')
-
-def merchproducts(request):
-    return render(request, 'merchants/merch_products.html')
+    all_orders = get_orders(request)
+    return render(request, 'merchants/merch_orders.html', all_orders)
 
 def merchreport(request):
     return render(request, 'merchants/merch_report.html')
@@ -70,9 +69,7 @@ urlpatterns = [
     path('offers/',include('offers.urls')),
     path('customer/',include('karmapoints.urls')),
     path('merchdashboard/', merchdashboard),
-    path('merchcustomers/', merchcustomers),
     path('merchorders/', merchorders),
-    path('merchproducts/', merchproducts),
     path('merchreport/', merchreport),
     
 ]

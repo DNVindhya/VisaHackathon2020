@@ -16,3 +16,33 @@
     color: #1A1F71 !important;
     font-size: x-large;
 }
+
+.favicon-edit-icon {
+    color: #ffc107;
+}
+
+.favicon-delete-icon {
+    color: #dc3545;
+}
+
+.headline {
+    font-size: xx-large;
+    color: #1A1F71 !important;
+    margin-bottom: 1rem;
+}
+
+.favicon-add-icon {
+    color: white;
+}
+
+.add-offer-icon {
+    margin-left: 50px;
+}
+
+.app-title {
+    font-size: x-large;
+}
+
+.nav-link {
+    text-decoration: none !important;
+}

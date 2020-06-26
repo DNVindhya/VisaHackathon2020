@@ -14,3 +14,8 @@ def view_karma_points(request):
 	data["transactions"]=order_json
 	return JsonResponse(data,safe=False);
 
+def get_orders(request):
+	user=request.user.merchant
+	orders=Orders.objects.filter(merchant=user).order_by('-order_date')
+	context = {'orders': orders}
+	return context
