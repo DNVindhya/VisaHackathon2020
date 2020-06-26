@@ -60,13 +60,14 @@ def create_update_offer(request, pk=None):
 	}
 	return render(request, 'offers/create_offers.html', context)
 
-def view_offers(request):
+def get_offers(request):
 	user=request.user.merchant
 	print(user.id)
 	offers=Offers.objects.filter(merchant=user)
 	print(offers)
 	context = {'offers':offers}
-	return render(request, 'offers/view_offers.html', context)
+	return context
+	# return render(request, 'merchants/merch_dashboard.html', context)
 
 def delete_offer(request,pk):
 	offer=Offers.objects.filter(id=pk)
