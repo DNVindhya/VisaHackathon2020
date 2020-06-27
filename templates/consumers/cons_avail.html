@@ -135,6 +135,7 @@
   // locate you.
   var map, infoWindow;
   function initMap() {
+
     // Try HTML5 geolocation.
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(function(position) {
@@ -142,6 +143,22 @@
           lat: position.coords.latitude,
           lng: position.coords.longitude
         };
+
+        var url='/process_order/'
+        fetch(url,{
+          method:'POST',
+          headers:{
+            'Content-Type':'application/json',
+            'X-CSRFToken':csrftoken,
+          },
+          body:JSON.stringify({'lat':pos['lat'],'lng':pos['lng']})
+        })
+        .then((response)=>response.json())
+        .then((data)=>{
+          console.log('Success:',data);
+          alert('Transaction completed');
+          window.location.href="{% url 'store'%}"
+        })
 
         console.log(pos);
 
@@ -152,12 +169,11 @@
             }
           };
         var ItemJSON;
-        var requestURL = "https://maps.googleapis.com/maps/api/geocode/json?latlng=" + pos['lat'] + "," + pos['lng'] + "&key=AIzaSyCjcpM5f9cBulTeZMyL2fc3Jh-9UJ558rI";
+        var requestURL = "https://maps.googleapis.com/maps/api/geocode/json?latlng=" + pos['lat'] + "," + pos['lng'] + "&key=AIzaSyCLKMTl60zVE9QesazTh0Mxr8UjVD7THs4";
         xhttp.open("POST", requestURL, true);
         xhttp.setRequestHeader("Content-type", "application/json");
         xhttp.send(ItemJSON);
         console.log(ItemJSON);
-
         document.getElementById("location-string").innerHTML = 'Current Location: ' + pos["lat"];
 
       }, function() {
@@ -171,7 +187,7 @@
 
 </script>
 <script async defer
-src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCjcpM5f9cBulTeZMyL2fc3Jh-9UJ558rI&callback=initMap">
+src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCLKMTl60zVE9QesazTh0Mxr8UjVD7THs4&callback=initMap">
 </script>
 
     {% endblock %}
