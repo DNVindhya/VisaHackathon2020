@@ -26,6 +26,7 @@ def get_orders(request):
 	return context
 
 def earn_karma_points(request):
+	print("checked")
 	merchants=Merchant.objects.all()
 	listofmerchants=[]
 	for merchant in merchants:
