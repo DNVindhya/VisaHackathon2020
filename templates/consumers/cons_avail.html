@@ -144,21 +144,21 @@
           lng: position.coords.longitude
         };
 
-        var url='/process_order/'
-        fetch(url,{
-          method:'POST',
-          headers:{
-            'Content-Type':'application/json',
-            'X-CSRFToken':csrftoken,
-          },
-          body:JSON.stringify({'lat':pos['lat'],'lng':pos['lng']})
-        })
-        .then((response)=>response.json())
-        .then((data)=>{
-          console.log('Success:',data);
-          alert('Transaction completed');
-          window.location.href="{% url 'store'%}"
-        })
+        $.ajax(
+              {
+                  type:"GET",
+                  url: "/customer/avail_karma_points",
+                  data:{
+                           lat:pos['lat'],
+                           lng:pos['lng']
+
+                  },
+                  success: function( data ) 
+                  {
+                     console.log('Success:',data)
+
+                  }
+               })
 
         console.log(pos);
 

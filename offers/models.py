@@ -12,6 +12,8 @@ class Merchant(models.Model):
 	address = models.CharField(max_length = 200, null = True)
 	card_details = models.IntegerField(null = True)
 	date_created = models.DateTimeField(auto_now_add= True, null = True)
+	latitude = models.DecimalField(max_digits=22, decimal_places=16,null=True,blank=True)
+	longitude = models.DecimalField(max_digits=22, decimal_places=16,null=True,blank=True)
 
 
 	def __str__(self):
