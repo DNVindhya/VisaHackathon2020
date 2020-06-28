@@ -1,10 +1,10 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.conf import settings
 from offers.models import *
 
 # Create your models here.
 class Consumer(models.Model):
-	user=models.OneToOneField(User, on_delete=models.CASCADE, null=True,blank=True)
+	user=models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True,blank=True)
 	first_name = models.CharField(max_length = 100, null = True)
 	last_name = models.CharField(max_length = 100, null = True)
 	contact_number = models.IntegerField(null = True)

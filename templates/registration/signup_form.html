@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block html_head %}
+
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Local Support by Visa - Support and Find Exclusive Rewards at Small, Local Merchannts near you.">
+    <meta name="author" content="Visa Inc.">
+
+    <!-- Website Title -->
+    <title>Signup | Local Support by Visa | Support Local Merchants &amp; Earn Exclusive Rewards</title>
+
+{% endblock %}
+
+{% block content %}
+
+    <!-- Header -->
+    <header id="header" class="ex-2-header">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12" style="padding-bottom: 5rem;">
+                    <h1>Sign Up</h1>
+                   <p>Fill out the form below to sign up for Visa's Local Support. Already signed up? Then just <a class="white" href="{% url 'login' %}">Log In</a></p> 
+                    <!-- Sign Up Form -->
+                    <div class="form-container">
+                        <form id="NormalsignUpForm" method="post">
+                            {% csrf_token %}
+                            <input type="hidden" name="next" value="{{ next }}">
+                            {{ form|crispy }}
+                            
+                            <!--<div class="form-group">
+                                <input type="email" class="form-control-input" id="semail" required>
+                                <label class="label-control" for="semail">Email</label>
+                                <div class="help-block with-errors"></div>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" class="form-control-input" id="sname" required>
+                                <label class="label-control" for="sname">Name</label>
+                                <div class="help-block with-errors"></div>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" class="form-control-input" id="spassword" required>
+                                <label class="label-control" for="spassword">Password</label>
+                                <div class="help-block with-errors"></div>
+                            </div>
+                            <div class="form-group checkbox">
+                                <input type="checkbox" id="sterms" value="Agreed-to-Terms" required>I agree with Visa's <a href="#">Privacy Policy</a> and <a href="#">Terms Conditions</a>
+                                <div class="help-block with-errors"></div>
+                            </div>-->
+                            <div class="form-group">
+                                <button type="submit" class="form-control-submit-button">SIGN UP</button>
+                            </div>
+                            <div class="form-message">
+                                <div id="smsgSubmit" class="h3 text-center hidden"></div>
+                            </div>
+                        </form>
+                    </div> <!-- end of form container -->
+                    <!-- end of sign up form -->
+
+                </div> <!-- end of col -->
+            </div> <!-- end of row -->
+        </div> <!-- end of container -->
+    </header> <!-- end of ex-header -->
+    <!-- end of header -->
+    
+{% endblock %}
