@@ -75,6 +75,8 @@ def merchorders(request):
 def merchreport(request):
     return render(request, 'merchants/merch_report.html')
 
+def custwallet(request):
+    return render(request, 'wallet.html')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -101,6 +103,7 @@ urlpatterns = [
     path('consorders/', consorders),
     path('consofferprofile/', consofferprofile),
     path('consearnpoints/', consearnpoints),
-]
+    path('wallet/', custwallet),
+]+ static(settings.STATIC_URL)
 
 
