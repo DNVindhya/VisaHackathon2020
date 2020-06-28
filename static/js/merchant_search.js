@@ -17,34 +17,27 @@ searchBar.addEventListener('keyup', (e) => {
 
 const loadCharacters = async () => {
     try {
-        const res = await fetch('https://hp-api.herokuapp.com/api/characters');
-        hpCharacters = await res.json();
-        displayCharacters(hpCharacters);
+        const res = await fetch('/customer/earn_karma_points');
+        console.log("Success")
+        merchants = await res.json();
+        displayCharacters(merchants);
+
     } catch (err) {
         console.error(err);
     }
 };
 
-const displayCharacters = (characters) => {
-    const htmlString = characters
-        .map((character) => {
+const displayCharacters = (merchants) => {
+    const htmlString = merchants
+        .map((merchant) => {
             return `
-            <div class="flip-card">
-                <div class="flip-card-inner">
-                    <div class="flip-card-front">
-                        <li class="character">
-                            <h2>${character.name}</h2>
-                            <p>House: ${character.house}</p>
-                            <img src="${character.image}"></img>
-                        </li>
-                    </div>
-                    <div class="flip-card-back">
-                        <h1>John Doe</h1> 
-                        <p>Architect & Engineer</p> 
-                        <p>We love that guy</p>
-                    </div>
-                </div>
-            </div>
+                <li class="character">
+                    <button>
+                    <h2>${merchant.merchant_name}</h2>
+                    <p>Address: ${merchant.address}</p>
+                    <p>Offers: ${merchant.offers}</p>
+                    </button>
+                </li>
         `;
 
         })
