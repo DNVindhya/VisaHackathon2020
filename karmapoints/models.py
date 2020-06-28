@@ -14,6 +14,8 @@ class Consumer(models.Model):
 	current_karma_points = models.IntegerField(null = True)
 	card_details = models.IntegerField(null = True)
 	date_created = models.DateTimeField(auto_now_add= True, null = True)
+	curr_lat = models.DecimalField(max_digits=22, decimal_places=16,null=True,blank=True)
+	curr_long = models.DecimalField(max_digits=22, decimal_places=16,null=True,blank=True)
 
 	def __str__(self):
 	    return self.first_name
