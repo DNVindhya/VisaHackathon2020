@@ -1,9 +1,9 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.conf import settings
 
 # Create your models here.
 class Merchant(models.Model):
-	user=models.OneToOneField(User, on_delete=models.CASCADE, null=True,blank=True)
+	user=models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True,blank=True)
 	name = models.CharField(max_length = 200, null = True)
 	annual_revenue = models.IntegerField(null = True)
 	business_category = models.CharField(max_length = 200, null = True)

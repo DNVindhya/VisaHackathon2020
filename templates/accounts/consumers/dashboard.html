@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block html_head %}
+
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Local Support by Visa - Support and Find Exclusive Rewards at Small, Local Merchannts near you.">
+    <meta name="author" content="Visa Inc.">
+
+    <!-- Website Title -->
+    <title>Index | Local Support by Visa | Support Local Merchants &amp; Earn Exclusive Rewards</title>
+
+{% endblock %}
+
+{% block content %}
+
+<h1>Dashboard</h1>
+<p>Welcome to your Consumer.</p>
+      <a href="{% url "logout" %}">Logout</a>
+      
+{% endblock %}

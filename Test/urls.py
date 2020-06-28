@@ -22,6 +22,8 @@ from django.shortcuts import render
 from offers.views import get_offers
 from karmapoints.views import get_orders
 
+from accounts.views import platform, merchant, consumer
+
 def homepage(request):
     return render(request, 'landing/index.html')
     # return HttpResponse('Home Page')
@@ -76,10 +78,14 @@ def merchreport(request):
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', homepage),
-    path('index/', homepage),
-    path('login/', login),
-    path('signup/', signup),
+    path('', include('accounts.urls')),
+    path('accounts/', include('django.contrib.auth.urls')),
+    #path('accounts/signup/', classroom.SignUpView.as_view(), name='signup'),
+    path('accounts/signup/consumer/', consumer.ConsumerSignUpView.as_view(), name='consumer_signup'),
+    path('accounts/signup/merchant/', merchant.MerchantSignUpView.as_view(), name='merchant_signup'),
+    #path('index/', homepage),
+    #path('login/', login),
+    #path('signup/', signup),
     path('custlogin/', custlogin),
     path('custsignup/', custsignup),
     path('merchlogin/', merchlogin),
