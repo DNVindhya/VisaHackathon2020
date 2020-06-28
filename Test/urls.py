@@ -59,6 +59,9 @@ def consorders(request):
 def consofferprofile(request):
     return render(request, 'consumers/cons_offer_profile.html')
 
+def consearnpoints(request):
+    return render(request, 'consumers/cons_earnpoints.html')
+
 def merchdashboard(request):
     all_offers = get_offers(request)
     return render(request, 'merchants/merch_dashboard.html', all_offers)
@@ -91,6 +94,7 @@ urlpatterns = [
     path('conswallet/', conswallet),
     path('consorders/', consorders),
     path('consofferprofile/', consofferprofile),
+    path('consearnpoints/', consearnpoints),
 ]
 
 
