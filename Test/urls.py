@@ -55,6 +55,9 @@ def merchorders(request):
 def merchreport(request):
     return render(request, 'merchants/merch_report.html')
 
+def merchaccount(request):
+    return render(request, 'merchants/merch_account.html')
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -71,6 +74,7 @@ urlpatterns = [
     path('merchdashboard/', merchdashboard),
     path('merchorders/', merchorders),
     path('merchreport/', merchreport),
+    path('merchaccount/', merchaccount),
     
 ]
 
