@@ -26,15 +26,24 @@ def get_orders(request):
 	return context
 
 def earn_karma_points(request):
+	print("checked")
 	merchants=Merchant.objects.all()
 	listofmerchants=[]
 	for merchant in merchants:
 		dictval={}
-		dictval["merchant"]=merchant.name
+		print(merchant)
+		print(merchant.id)
+		dictval["merchant_id"] = merchant.id
+		dictval["merchant_name"]=merchant.name
+		dictval["address"]=merchant.address
 		dictval["offers"]=list(Offers.objects.filter(merchant=merchant).values())
 		listofmerchants.append(dictval)
 	return JsonResponse(listofmerchants,safe=False);
 
+def earn_offers(request, pk):
+	offers = Offers.objects.filter(merchant = pk)
+	context = {'offers': offers}
+	return render(request,'consumers/cons_earn_offers.html',context)
 
 def avail_karma_points(request):
 	latitude=request.GET.get('lat');
