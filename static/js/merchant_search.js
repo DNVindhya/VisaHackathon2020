@@ -1,4 +1,5 @@
 // https://hp-api.herokuapp.com/api/characters
+// "{% url '/customer/earn_offers' merchant.merchant_id %}"
 const charactersList = document.getElementById('charactersList');
 const searchBar = document.getElementById('searchBar');
 let hpCharacters = [];
@@ -31,13 +32,15 @@ const displayCharacters = (merchants) => {
     const htmlString = merchants
         .map((merchant) => {
             return `
+            <a href="/customer/earn_offers/${merchant.merchant_id}/">
                 <li class="character">
-                    <button>
+                    <h1> ${merchant.merchant_id} </h1>
                     <h2>${merchant.merchant_name}</h2>
                     <p>Address: ${merchant.address}</p>
                     <p>Offers: ${merchant.offers}</p>
                     </button>
                 </li>
+            </a>
         `;
 
         })
