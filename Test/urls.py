@@ -81,8 +81,7 @@ def merchreport(request):
 def merchaccount(request):
     return render(request, 'merchants/merch_account.html')
 
-def custwallet(request):
-    return render(request, 'wallet.html')
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
