@@ -13,7 +13,7 @@
                     placeholder="Search for nearby Merchants"
                 />
             </div>
-            <ul id="charactersList"></ul>
+            <ul id="merchantList"></ul>
         </div>
         <script src="{% static 'js/merchant_search.js' %}"></script>
     </body>
@@ -23,7 +23,7 @@
 <style>
 body {
     font-family: sans-serif;
-    background-color: #111d4a;
+    background-color: #172274;
 }
 
 * {
@@ -37,14 +37,13 @@ h1 {
     padding: 40px;
     margin: 0 auto;
     max-width: 1000px;
+    max-height: 1000px;
     text-align: center;
 }
 
-#charactersList {
+#merchantList {
     padding-inline-start: 0;
-    display: grid;
     grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-    grid-gap: 20px;
 }
 
 .character {
@@ -52,29 +51,19 @@ h1 {
     background-color: #eaeaea;
     border-radius: 3px;
     padding: 10px 20px;
-    display: grid;
-    grid-template-columns: 3fr 1fr;
-    grid-template-areas:
-        'name image'
-        'house image';
     text-align: left;
 }
 
-.character > h2 {
-    grid-area: name;
+.character > h5 {
     margin-bottom: 0px;
 }
 
 .character > p {
-    grid-area: house;
     margin: 0;
+    height: 50px;
     margin-top: -18px;
 }
 
-.character > img {
-    max-height: 100px;
-    grid-area: image;
-}
 
 #searchBar {
     width: 100%;
@@ -95,7 +84,7 @@ h1 {
     top: 7px;
     right: 15px;
 }
-
+/*
 .flip-card {
   background-color: transparent;
   width: 300px;
@@ -135,7 +124,7 @@ h1 {
   color: white;
   transform: rotateY(180deg);
 }
-
+*/
 </style>
 {% endblock %}
 
