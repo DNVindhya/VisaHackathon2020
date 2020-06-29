@@ -75,6 +75,9 @@ def merchorders(request):
 def merchreport(request):
     return render(request, 'merchants/merch_report.html')
 
+def merchaccount(request):
+    return render(request, 'merchants/merch_account.html')
+
 def custwallet(request):
     return render(request, 'wallet.html')
 
@@ -97,6 +100,7 @@ urlpatterns = [
     path('merchdashboard/', merchdashboard),
     path('merchorders/', merchorders),
     path('merchreport/', merchreport),
+    path('merchaccount/', merchaccount),
     path('consearn/', consearn),
     path('consavail/', consavail),
     path('conswallet/', conswallet),
