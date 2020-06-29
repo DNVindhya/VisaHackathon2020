@@ -1,24 +1,169 @@
-<html>
-    <head>
-        <title>Dummy Page</title>
-    </head>
-    <body>
-        <h2>Offers</h2>
-    <hr>
-	<div class="row">
-		{% for offer in offers %}
-        <div class="col-lg-4">
-            <div class="box-element product">
-                <h6><strong>Offer ID: </strong>{{offer.id}}</h6>
-                <h6><strong>Karma Points: </strong>{{offer.karma_points}}</h6>
-                <h6><strong>Percentage Off: </strong>{{offer.percentage_off}}</h6>
-                <h6><strong>Offer Start Date: </strong>{{offer.offer_start_date.date}}</h6>
-                <h6><strong>Offer Valid Days: </strong>{{offer.days_valid}}</h6>
-                <hr>
-            </div>
-        </div>
+{% extends "consumers/cons_base.html" %}
+{% load static %}
+    
+    {% block content %}
 
+    <center>
+        <h2><strong>Merchant Name: </strong>{{merchant}}</h2>
+        <div style="padding-bottom: 20px;">
+          <h3 id="confirmation-msg" style="font-size: 15px;"></h3>
+            <label for="recipient-name" class="col-form-label">Enter bill amount at store:</label>
+            <input type="text" name="order_amount" id="recipient-name" style="height: 37px;">
+            <button id="tag-form-submit" type="submit" class="btn btn-dark">Make Payment</button>
+        </div>
+        <hr style="padding-bottom: 20px;"/>
+        <h2>Use Karma Points Balance: 60 Points</h2>
+        <a id="maps-link" href=""><h2 id="location-string" style="text-decoration: none;">Merchant Location: {{merchant_address}}</h2></a>
+        
+    </center>
+    <div class="container" style="margin-top: 30px;" id="offers-list">
+        {% for offer in offers %}
+        
+        <a data-toggle="modal" data-target="#exampleModal" data-offerid="${data[i]['id']}" data-whatever="${data[i]['merchant_name']}">
+            <div class="card">
+              <div class="child">
+                <h2>ID: {{offer.id}}</h2>
+                <h4>{{offer.details}}</h4>
+                <p class="karma-para">{{offer.karma_points_required}} Karma Points</p>
+                <p class="karma-para" style="padding-bottom: 20px;">Start Date: {{offer.offer_start_date.date}}</p>
+              </div>
+              <div class="child"></div>
+            </div>
+            </a>
        {% endfor %}
     </div>
-    </body>
-</html>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Confirm Offer</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form id="tagForm" action="/customer/confirm_order/" method="POST">{% csrf_token %}
+      <div class="modal-body">
+        <h3 id="confirmation-msg" style="font-size: 15px;"></h3>
+        <!--<form id="tagForm" action="/customer/confirm_order/" method="POST">{% csrf_token %}-->
+            <label for="recipient-name" class="col-form-label">Enter bill amount at store:</label>
+            <input type="text" class="form-control" name="order_amount" id="recipient-name">
+            <input type="hidden" name="offerId" id="offerId" value=""/>
+        <!--</form>-->
+      </div>
+
+      <div class="modal-body">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <!--     <a type="button" class="btn btn-primary" href="/consofferprofile">Approved by Merchant?</a> -->
+        <input id="tag-form-submit" type="submit" class="btn btn-primary" value="Approved by Merchant?">
+        </form>
+      </div>
+    </div>
+  </div>
+    {% endblock %}
+    {% block scripts %}
+    <style>
+      @import url("https://fonts.googleapis.com/css?family=Arbutus+Slab|Open+Sans&display=swap");
+body {
+      background: #b5ced8;
+}
+
+h2 {
+  font-family: Arbutus Slab, serif;
+  font-weight: normal;
+  color: #000;
+  line-height: 1.25;
+  font-size: 18px;
+  text-decoration: underline;
+  margin-top: 10px;
+}
+
+h4 {
+  margin-top: 30px;
+}
+
+.karma-para {
+  position: absolute;
+  bottom: 0;
+  font-size: 14px;
+}
+
+.container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  grid-gap: 48px;
+  margin: 0 auto;
+}
+
+.card {
+  cursor: pointer;
+  position: relative;
+  height: 0;
+  padding-bottom: 120%;
+  --offset-multiplier: 4px;
+  -webkit-transition: -webkit-transform 0.6s ease;
+  transition: -webkit-transform 0.6s ease;
+  transition: transform 0.6s ease;
+  transition: transform 0.6s ease, -webkit-transform 0.6s ease;
+  --translate: 0;
+  -webkit-transform: translate(var(--translate), var(--translate));
+          transform: translate(var(--translate), var(--translate));
+}
+.card:hover {
+  --offset-multiplier: 6px;
+}
+.card:hover {
+  --translate: calc(-1px * (var(--cards) - 1));
+  -webkit-transition: -webkit-transform 0.3s ease;
+  transition: -webkit-transform 0.3s ease;
+  transition: transform 0.3s ease;
+  transition: transform 0.3s ease, -webkit-transform 0.3s ease;
+}
+
+.child {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  padding: 0 16px;
+  box-sizing: border-box;
+  background: #fff;
+  box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.1), 0px -2px 8px rgba(255, 255, 255, 0.8);
+  border-radius: 6px;
+  -webkit-transition: inherit;
+  transition: inherit;
+  --translate: calc(var(--offset) * var(--offset-multiplier));
+  -webkit-transform: translate(var(--translate), var(--translate));
+          transform: translate(var(--translate), var(--translate));
+  z-index: 5;
+}
+.child:nth-child(1) {
+  --offset: 0;
+  z-index: 4;
+}
+.child:nth-child(2) {
+  --offset: 1;
+  z-index: 3;
+}
+.child:nth-child(3) {
+  --offset: 2;
+  z-index: 2;
+}
+.child:nth-child(4) {
+  --offset: 3;
+  z-index: 1;
+}
+.child:nth-child(5) {
+  --offset: 4;
+  z-index: 0;
+}
+
+    </style>
+    <script>
+        var htmlLink = "http://maps.google.com/?q=" + merchant_address;
+        console.log(merchant_address);
+        document.getElementById("maps-link").setAttribute("href", "#BOOM");
+    </script>
+    {% endblock %}
