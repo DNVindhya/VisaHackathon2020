@@ -2,6 +2,22 @@
     background-color: #1A1F71;
 }
 
+.nav-item {
+    padding: 0.3rem;
+}
+
+.selected-nav-item {
+    background-color: #d5dde8;
+}
+
+.nav-item:hover {
+    background-color: #eceef1;
+}
+
+.nav-link {
+    font-size: larger;
+}
+
 .navbar-logo-image {
     height: 40px;
     width: 115px;
@@ -13,7 +29,6 @@
 }
 
 .text-primary {
-    color: #1A1F71 !important;
     font-size: x-large;
 }
 
@@ -23,6 +38,10 @@
 
 .favicon-delete-icon {
     color: #dc3545;
+}
+
+.left-navbar-icon {
+    height: 30px;
 }
 
 .headline {
@@ -46,3 +65,37 @@
 .nav-link {
     text-decoration: none !important;
 }
+
+.sidebar {
+    padding-left: 0px;
+    padding-right: 0px;
+}
+
+/* for credit cards */
+label {
+    width: 100%;
+}
+
+.card-input-element {
+    display: none;
+}
+
+.card-input {
+    margin: 10px;
+    padding: 1rem;
+    background-color: #f0f1f2;
+}
+
+.card-input:hover {
+    cursor: pointer;
+}
+
+.card-input-element:checked + .card-input {
+     box-shadow: 0 0 1px 1px #66a3e3;
+     background-color: #dfe3e8;
+ }
+
+ .credit-card-label {
+     display: grid;
+ }
+ /* end for credit cards */
