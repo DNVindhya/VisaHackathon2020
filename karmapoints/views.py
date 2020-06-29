@@ -105,12 +105,15 @@ def confirm_order(request):
 	#print("confirm_order_view")
 	offer_id=request.POST.get('offerId')
 	order_amount=float(request.POST.get('order_amount'))
-	#print(offer_id)
-	offer=list(Offers.objects.filter(id=offer_id).values())[0]
+	# print(offer_id)
+	offer1 = list(Offers.objects.filter(id=offer_id).values())[0]
+	offer = Offers.objects.get(id = offer_id)
+	print(offer1)
+	merchant = Merchant.objects.get(id = offer1['merchant_id'])
 	#print(offer['percentage_off'])
 	#print(type(offer['percentage_off']))
 	#print(type(order_amount))
-	final_amount=order_amount-(order_amount*offer['percentage_off']/100)
+	final_amount=order_amount-(order_amount*offer1['percentage_off']/100)
 	#final_amount=order_amount
-	context={'order_amount':order_amount,'offer':offer,'final_amount':final_amount}
+	context={'order_amount':order_amount,'offer':offer,'final_amount':final_amount,'merchant':merchant}
 	return render(request,'consumers/cons_offer_profile.html',context)

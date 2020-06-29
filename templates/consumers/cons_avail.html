@@ -50,8 +50,8 @@
           </div></a></li>
     </ol> -->
 
-<center><h2>Karma Points Balance: 60 Points</h2>
-<h2 id="location-string">Current Location: Invalid</h2>
+<center><h2 style="text-decoration: none;">Karma Points Balance: 60 Points</h2>
+<a id="maps-link"><h2 id="location-string">Current Location: Invalid</h2></a>
 <a class="btn btn-dark" onclick="initMap()" style="margin-top: 10px; color: white;">FIND OFFERS NEAR YOU</a>
 </center>
 <div class="container" style="margin-top: 30px;" id="offers-list">
@@ -249,22 +249,21 @@ h4 {
                   }
                })
 
-        console.log(pos);
-
         var xhttp = new XMLHttpRequest();
         xhttp.onreadystatechange = function() {
          if (this.readyState == 4 && this.status == 200) {
-             alert(this.responseText);
+              var short_loc_string = JSON.parse(xhttp.response).results[7].formatted_address;
+              document.getElementById("location-string").innerHTML = 'Current Location: ' + short_loc_string;
+
+              var loc_string = JSON.parse(xhttp.response).results[0].formatted_address;
+              var htmlLink = "http://maps.google.com/?q=" + loc_string;
+              document.getElementById("maps-link").setAttribute("href", htmlLink);
+              document.getElementById("maps-link").setAttribute("target", "__blank");
             }
           };
-        var ItemJSON;
         var requestURL = "https://maps.googleapis.com/maps/api/geocode/json?latlng=" + pos['lat'] + "," + pos['lng'] + "&key=AIzaSyCLKMTl60zVE9QesazTh0Mxr8UjVD7THs4";
         xhttp.open("POST", requestURL, true);
-        xhttp.setRequestHeader("Content-type", "application/json");
-        xhttp.send(ItemJSON);
-        console.log(ItemJSON);
-        document.getElementById("location-string").innerHTML = 'Current Location: ' + pos["lat"];
-
+        xhttp.send();
       }, function() {
         console.log("Geolocation failed, can't sort by location. Make sure permission is enabled.");
       });
@@ -278,5 +277,4 @@ h4 {
 <script async defer
 src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCLKMTl60zVE9QesazTh0Mxr8UjVD7THs4">
 </script>
-
     {% endblock %}
