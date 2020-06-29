@@ -44,7 +44,7 @@ def earn_offers(request, pk):
 	offers = Offers.objects.filter(merchant = pk)
 	merchant = list(Merchant.objects.filter(id = pk).values())
 	print(merchant)
-	context = {'offers': offers, 'merchant': merchant[0]['name']}
+	context = {'offers': offers, 'merchant': merchant[0]['name'], 'merchant_address': merchant[0]['address']}
 	return render(request,'consumers/cons_earn_offers.html',context)
 	
 
