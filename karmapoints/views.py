@@ -100,3 +100,17 @@ def avail_karma_points(request):
 	#print(offer_list)
 
 	return JsonResponse(offer_list,safe=False);
+
+def confirm_order(request):
+	#print("confirm_order_view")
+	offer_id=request.POST.get('offerId')
+	order_amount=float(request.POST.get('order_amount'))
+	#print(offer_id)
+	offer=list(Offers.objects.filter(id=offer_id).values())[0]
+	#print(offer['percentage_off'])
+	#print(type(offer['percentage_off']))
+	#print(type(order_amount))
+	final_amount=order_amount-(order_amount*offer['percentage_off']/100)
+	#final_amount=order_amount
+	context={'order_amount':order_amount,'offer':offer,'final_amount':final_amount}
+	return render(request,'consumers/cons_offer_profile.html',context)

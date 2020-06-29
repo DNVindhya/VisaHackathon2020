@@ -66,19 +66,23 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
+      <form id="tagForm" action="/customer/confirm_order/" method="POST">{% csrf_token %}
       <div class="modal-body">
         <h3 id="confirmation-msg" style="font-size: 15px;"></h3>
-        <form>
+        <!--<form id="tagForm" action="/customer/confirm_order/" method="POST">{% csrf_token %}-->
             <label for="recipient-name" class="col-form-label">Enter bill amount at store:</label>
-            <input type="text" class="form-control" id="recipient-name">
-        </form>
+            <input type="text" class="form-control" name="order_amount" id="recipient-name">
+            <input type="hidden" name="offerId" id="offerId" value=""/>
+        <!--</form>-->
       </div>
 
       <div class="modal-body">
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <a type="button" class="btn btn-primary" href="/consofferprofile">Approved by Merchant?</a>
+        <!--     <a type="button" class="btn btn-primary" href="/consofferprofile">Approved by Merchant?</a> -->
+        <input id="tag-form-submit" type="submit" class="btn btn-primary" value="Approved by Merchant?">
+        </form>
       </div>
     </div>
   </div>
@@ -192,12 +196,17 @@ h4 {
 
   $('#exampleModal').on('shown.bs.modal', function (event) {
     var button = $(event.relatedTarget) // Button that triggered the modal
-    var recipient = button.data('whatever') // Extract info from data-* attributes
+    var recipient = button.data('whatever')
+    var offer=button.data('offerid') // Extract info from data-* attributes
     // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
     // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
     var modal = $(this)
     modal.find('#confirmation-msg').text('Confirm order amount and offer validity with ' + recipient)
+    modal.find('#offerId').val(offer)
   })
+
+
+  
 
   var map, infoWindow;
   function initMap() {
@@ -224,7 +233,7 @@ h4 {
                     console.log('Success:',data[0])
                     for (var i = 0; i < data.length; i++) {
                       console.log(data[i])
-                      var htmlString = `<a data-toggle="modal" data-target="#exampleModal" data-whatever="${data[i]['merchant_name']}">
+                      var htmlString = `<a data-toggle="modal" data-target="#exampleModal" data-offerid="${data[i]['id']}" data-whatever="${data[i]['merchant_name']}">
                                         <div class="card">
                                           <div class="child">
                                             <h2>${data[i]['details']}</h2>
