@@ -2,7 +2,9 @@
 {% load static %}
     
     {% block content %}
-<center><h2 style="text-decoration: none; margin-top: 20px;">Karma Points Balance: <span id="karma_balance">{{user.current_karma_points}}</span></h2>
+<center>
+  <h2 class="border-bottom" style="font-family: inherit; text-decoration: none; font-size: 35px; margin-top: 18px; color: #000; line-height: 1.25; padding-bottom: 20px;"><strong>Avail Offers</strong></h2>
+  <h2 style="text-decoration: none; margin-top: 20px;">Karma Points Balance: <span id="karma_balance">{{user.current_karma_points}}</span></h2>
 <a id="maps-link"><h2 id="location-string">Current Location: Invalid</h2></a>
 <a class="btn btn-dark" onclick="initMap()" style="margin-top: 10px; color: white;">FIND OFFERS NEAR YOU</a>
 </center>
