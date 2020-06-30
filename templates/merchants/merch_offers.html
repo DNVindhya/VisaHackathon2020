@@ -6,22 +6,6 @@
             <h1 class="h2">Dashboard</h1>
           </div>
 
-          
-
-          <div class="headline">My Store</div>
-          <div class="row mb-2">
-            <div class="col-md-12">
-              <div class="card flex-md-row mb-4 shadow-sm h-md-250">
-                <div class="card-body d-flex flex-column align-items-start">
-                  <p class="card-text mb-auto">{{store_name}}</p>
-                  <div class="mb-1 text-muted">{{address}}, {{city}}, {{state}} - {{zip}}</div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="headline">Active and Upcoming Offers
-              <a class="btn btn-success add-offer-icon" href="{% url 'create_offer' %}"><span class="favicon-add-icon" data-feather="plus"></span></a>
-          </div>
           <div id="offers-list">
             <table class="table">
               <thead class="thead-light">
@@ -45,7 +29,7 @@
                     <td>{{offer.offer_end_date}}</td>
                     <td>{{offer.details}}</td>
                     <td><a class="btn" href="{% url 'update_offer' offer.id %}"><span class="favicon-edit-icon" data-feather="edit"></span></a>
-                        <a class="btn" href="{% url 'delete_offer' offer.id %}"onclick="return confirm('Are you sure?')" ><span class="favicon-delete-icon" data-feather="trash"></span></a>
+                        <a class="btn" href="{% url 'delete_offer' offer.id %}"><span class="favicon-delete-icon" data-feather="trash"></span></a>
                     </td>
                   </tr>
                 {% endfor %}
@@ -57,29 +41,6 @@
 
     {% block scripts %}
     <script>
-      document.getElementById("nav-item-dashboard").classList.add('selected-nav-item');
-      const loadCharacters = async () => {
-        try {
-          const res = await fetch('/merchdashboard');
-          console.log(res)
-          listmerchants = await res.json();
-          console.log(listmerchants);
-
-        } catch (err) {
-          console.error(err);
-        }
-      };
-      
-      $.ajax({
-        url: "http://127.0.0.1:8000/getorders",
-        type: "GET",
-        data :{},
-        success:function(result){
-            console.log(result)
-        },
-        error:function(error){
-            //error handal
-        }
-      });
+      document.getElementById("nav-item-offers").classList.add('selected-nav-item');
     </script>
     {% endblock %}

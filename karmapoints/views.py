@@ -22,7 +22,7 @@ def view_karma_points(request):
 	data={}
 	data["current_karma_points"]=current_karma_points
 	data["transactions"]=order_json
-	return JsonResponse(data,safe=False);
+	return JsonResponse(data,safe=False)
 
 @login_required
 @consumer_required
@@ -33,12 +33,19 @@ def view_orders(request):
 	print(orders)
 	return render(request,'consumers/cons_orders.html',context)
 
-
 def get_orders(request):
 	user=request.user.user_merchant
 	orders = Orders.objects.filter(merchant=user).order_by('-order_date')
 	context = {'orders': orders}
 	return context
+
+def get_orders_json(request):
+	user=request.user.user_merchant
+	orders = Orders.objects.filter(merchant=user).order_by('-order_date')
+	orders_json = list(orders.values())
+	data = {}
+	data["orders"] = orders_json
+	return JsonResponse(data, safe = False)
 
 @login_required
 @consumer_required
