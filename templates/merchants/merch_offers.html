@@ -1,0 +1,45 @@
+{% extends "merchants/merch_base.html" %}
+{% load static %}
+    
+    {% block content %}
+          <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+            <h1 class="h2">All Offers</h1>
+          </div>
+          <div id="offers-list">
+            <table class="table">
+              <thead class="thead-light">
+                <tr>
+                  <th scope="col">Offer Name</th>
+                  <th scope="col">Karma Points</th>
+                  <th scope="col">Percentage Off</th>
+                  <th scope="col">Offer Start Date</th>
+                  <th scope="col">Offer End Date</th>
+                  <th scope="col">Offer Details</th>
+                  <th scope="col">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for offer in offers %}
+                  <tr>
+                    <td>{{offer.offer_name}}</td>
+                    <td>{{offer.karma_points_required}}</td>
+                    <td>{{offer.percentage_off}}</td>
+                    <td>{{offer.offer_start_date}}</td>
+                    <td>{{offer.offer_end_date}}</td>
+                    <td>{{offer.details}}</td>
+                    <td><a class="btn" href="{% url 'update_offer' offer.id %}"><span class="favicon-edit-icon" data-feather="edit"></span></a>
+                        <a class="btn" href="{% url 'delete_offer' offer.id %}"><span class="favicon-delete-icon" data-feather="trash"></span></a>
+                    </td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        
+    {% endblock %}
+
+    {% block scripts %}
+    <script>
+      document.getElementById("nav-item-offers").classList.add('selected-nav-item');
+    </script>
+    {% endblock %}

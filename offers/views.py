@@ -1,7 +1,7 @@
 from django.shortcuts import render,redirect
 from django.contrib.auth.models import User
 from offers.forms import CreateUpdateOfferForm
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, date
 from .models import *
 
 # Create your views here.
@@ -65,6 +65,14 @@ def get_offers(request):
 	print(user.id)
 	offers=Offers.objects.filter(merchant=user)
 	print(offers)
+	context = {'offers':offers}
+	return context
+	# return render(request, 'merchants/merch_dashboard.html', context)
+
+def get_current_and_upcoming_offers(request):
+	user=request.user.merchant
+	print(user.id)
+	offers=Offers.objects.filter(merchant=user)
 	context = {'offers':offers}
 	return context
 	# return render(request, 'merchants/merch_dashboard.html', context)
