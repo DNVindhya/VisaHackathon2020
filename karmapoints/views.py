@@ -9,7 +9,7 @@ import time
 from geopy.distance import geodesic
 from accounts.decorators import consumer_required
 from django.contrib.auth.decorators import login_required
-from accounts.models import Card_Details,User,Consumer
+from accounts.models import Card_Details,User,Consumer, Merchant
 
 # Create your views here.
 @login_required
@@ -35,8 +35,8 @@ def view_orders(request):
 
 
 def get_orders(request):
-	user=request.user.merchant
-	orders=Orders.objects.filter(merchant=user).order_by('-order_date')
+	user=request.user.user_merchant
+	orders = Orders.objects.filter(merchant=user).order_by('-order_date')
 	context = {'orders': orders}
 	return context
 
@@ -52,6 +52,12 @@ def view_offers(request):
 def view_merchants(request):
 	context={}
 	return render(request,'consumers/cons_earnpoints.html',context)
+
+@login_required
+@consumer_required
+def wallet(request):
+	context={}
+	return render(request,'consumers/cons_wallet.html',context)
 
 @login_required
 @consumer_required
@@ -80,8 +86,8 @@ def earn_karma_points(request):
 		dictval={}
 		print(merchant)
 		#print(merchant.id)
-		dictval["merchant_id"] = merchant.username
-		dictval["merchant_name"]=merchant.first_name
+		dictval["merchant_id"] = merchant.user_id
+		dictval["merchant_name"]=merchant.user.first_name
 		dictval["address"]=merchant.address
 		if merchant.latitude is not None:
 			dictval["distance"]=geodesic(user_loc, merch_loc).miles
@@ -98,9 +104,11 @@ def earn_karma_points(request):
 def earn_offers(request, pk):
 	offers = Offers.objects.filter(merchant = pk)
 	user=request.user.user_consumer
-	merchant = list(Merchant.objects.filter(id = pk).values())
-	print(merchant)
-	context = {'offers': offers, 'merchant': merchant[0]['name'], 'merchant_address': merchant[0]['address'],'user':user}
+	#merchant = list(Merchant.objects.filter(user_id = pk).values())
+	#print(merchant)
+	merchant=Merchant.objects.get(user_id = pk)
+	#context = {'offers': offers, 'merchant': merchant[0]['name'], 'merchant_address': merchant[0]['address'],'user':user,'merchant_obj':merchant_obj}
+	context = {'offers': offers,'user':user,'merchant':merchant}
 	return render(request,'consumers/cons_earn_offers.html',context)
 	
 @login_required
@@ -132,7 +140,7 @@ def avail_karma_points(request):
 	for merchant in merchants:
 		merch_loc=(merchant.latitude, merchant.longitude) 
 		dictval={}
-		dictval["merchant"]=merchant.name
+		dictval["merchant"]=merchant.user.first_name
 		if merchant.latitude is not None:
 			dictval["distance"]=geodesic(user_loc, merch_loc).miles
 		else:
@@ -169,16 +177,21 @@ def confirm_order(request):
 	offer1 = list(Offers.objects.filter(id=offer_id).values())[0]
 	offer = Offers.objects.get(id = offer_id)
 	print(offer1)
-	merchant = Merchant.objects.get(id = offer1['merchant_id'])
+	merchant = Merchant.objects.get(user_id = offer1['merchant_id'])
 	#print(offer['percentage_off'])
 	#print(type(offer['percentage_off']))
 	#print(type(order_amount))
 	final_amount=order_amount-(order_amount*offer1['percentage_off']/100)
-	card_details=Card_Details.objects.get(user=user)
+	try:
+		card_details=Card_Details.objects.get(user=user)
+	except:
+		card_details=None
 	#final_amount=order_amount
 	context={'order_amount':order_amount,'offer':offer,'final_amount':final_amount,'merchant':merchant,'user':user,'card_details':card_details}
 	return render(request,'consumers/cons_offer_profile.html',context)
 
+@login_required
+@consumer_required
 def process_payment(request):
 	merchant_id=request.POST.get('merchant_id')
 	consumer_id=request.POST.get('user_id')
@@ -193,6 +206,18 @@ def process_payment(request):
 	print(card_details)
 	return JsonResponse('Payment Complete',safe=False);
 
+@login_required
+@consumer_required
 def payment_success(request):
 	context={}
 	return render(request,'consumers/cons_payment_success.html',context)
+
+@login_required
+@consumer_required
+def pay_and_earn(request):
+	order_amount=float(request.POST.get('order_amount'))
+	merchant_id=request.POST.get('merchantId')
+	print(order_amount)
+	print(merchant_id)
+	context={}
+	return render(request,'consumers/cons_pay_and_earn.html',context)

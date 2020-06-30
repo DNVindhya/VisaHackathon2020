@@ -1,8 +1,8 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.utils.html import escape, mark_safe
-from creditcards.models import CardNumberField, CardExpiryField, SecurityCodeField
-from django_countries.fields import CountryField
+import requests
+
 COUNTRY_CHOICES =( 
     ("1", "USA") 
 ) 
@@ -42,11 +42,23 @@ class Merchant(models.Model):
     #card_details = CardNumberField('card number')
     #cc_expiry = CardExpiryField('expiration date')
     #cc_code = SecurityCodeField('security code')
-    card_details = models.IntegerField(null = True)
+    #card_details = models.IntegerField(null = True)
     date_created = models.DateTimeField(auto_now_add= True, null = True)
     latitude = models.DecimalField(max_digits=22, decimal_places=16,null=True,blank=True)
     longitude = models.DecimalField(max_digits=22, decimal_places=16,null=True,blank=True) 
 
+    def update_location(self):
+        address = self.address+','+self.city+','+self.state+','+self.zip_code
+        api_key = "AIzaSyCLKMTl60zVE9QesazTh0Mxr8UjVD7THs4"
+        api_response = requests.get('https://maps.googleapis.com/maps/api/geocode/json?address={0}&key={1}'.format(address, api_key))
+        api_response_dict = api_response.json()
+        print(api_response_dict)
+        if api_response_dict['status'] == 'OK':
+            self.latitude = api_response_dict['results'][0]['geometry']['location']['lat']
+            self.longitude = api_response_dict['results'][0]['geometry']['location']['lng']
+            print ("Latitude:", self.latitude)
+            print ("Longitude:", self.longitude)
+            
     def __str__(self):
         return self.user.username
 
@@ -56,5 +68,5 @@ class Card_Details(models.Model):
 	expiry_data=models.CharField(max_length=7)
 
 	def __str__(self):
-		return str(self.id)
+		return self.user.username   
 

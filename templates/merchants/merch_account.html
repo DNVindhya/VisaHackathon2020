@@ -79,7 +79,16 @@
                                     {% endif %}
                                 </div>
                                 {% endfor %}
-                                <!--<div class="mb-3">
+                                {% for field in card_form %}
+                                <div class="mb-3">
+                                    <div class="invalid-feedback">{{ field.errors }}</div>
+                                    {{ field |as_crispy_field  }}
+                                    {% if field.help_text %}
+                                    <p class="help">{{ field.help_text|safe }}</p>
+                                    {% endif %}
+                                </div>
+                                {% endfor %}
+                                <!--<div class="m
                                             <label for="username">Store Name</label>
                                             <input type="text" class="form-control" id="lastName" placeholder="" value="" required>
                                             <div class="invalid-feedback">

@@ -3,7 +3,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.db import transaction
 from django.forms.utils import ValidationError
 
-from accounts.models import ( Consumer, Merchant, User)
+from accounts.models import ( Consumer, Merchant, User, Card_Details)
 
 # COUNTRY_CHOICES =[
 #     ("1", "United States ")   
@@ -57,7 +57,7 @@ class MerchantUserEditForm(forms.ModelForm):
 class MerchantDetailsEditForm(forms.ModelForm):
     class Meta:
         model = Merchant
-        fields = ('card_details', 'address')
+        fields = ('address',)
 
 class MerchantAddressEditForm(forms.ModelForm):
     #country = forms.ChoiceField(choices = COUNTRY_CHOICES)
@@ -66,3 +66,8 @@ class MerchantAddressEditForm(forms.ModelForm):
         model = Merchant
         fields = ('state', 'city', 'zip_code')
 
+class MerchantCardEditForm(forms.ModelForm):
+    class Meta:
+        model = Card_Details
+        fields = ('account_number', 'expiry_data')
+        #labels = { 'account_number' : 'Visa Card Number', 'expiry_data': 'Expiry Date'}
