@@ -2,6 +2,16 @@
 {% load static %}
     
     {% block content %}
+     <script>
+        var offer_id="{{offer.id}}"
+        var merchant_id="{{merchant.id}}"
+        var consumer_id="{{user.id}}"
+        var card_id="{{card_details.id}}" 
+        console.log(offer_id)
+        console.log(merchant_id)
+        console.log(consumer_id)
+        console.log(card_id)
+    </script>
 
     <center>
     <h2 style="font-family: Arbutus Slab, serif; font-size: 22px; margin-top: 18px; color: #000; line-height: 1.25; text-decoration: underline;"><strong>Checkout Screen</strong></h2>
@@ -79,7 +89,7 @@
                                     </div>
                                     <div class="col-12 panel-footer creditcard-footer">
                                         <div class="row">
-                                            <div class="col-12 align-right"><button class="cancel">Cancel</button>&nbsp;<button class="confirm">Confirm & Pay</button></div>
+                                            <div class="col-12 align-right"><button class="cancel">Cancel</button>&nbsp;<button class="confirm" id="proceed_to_payment">Confirm & Pay</button></div>
                                         </div>
                                     </div>
                                 </div>
@@ -440,6 +450,28 @@ span.month.focused.active
 
     </style>
     <script>
+
+    $('#proceed_to_payment').on('click', function(e) {
+      $.ajax({
+          type: "POST",
+          url: "/customer/process_payment/",
+          data: {
+                  offer_id:offer_id,
+                  merchant_id:merchant_id,
+                  user_id:consumer_id,
+                  card_details_id:card_id,
+                  csrfmiddlewaretoken: '{{ csrf_token }}'
+                },
+          success: function(response) {
+              console.log(response)
+              window.location.href="/customer/payment_success"
+          },
+          error: function() {
+              alert('Error');
+          }
+      });
+      return false;
+  });
 
     $('[data-toggle="tooltip"]').tooltip();
     var template = $( '#template' ).html ();
