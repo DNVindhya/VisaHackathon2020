@@ -68,5 +68,5 @@ class Card_Details(models.Model):
 	expiry_data=models.CharField(max_length=7)
 
 	def __str__(self):
-		return self.user.usernames
+		return self.user.username   
 
