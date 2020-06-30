@@ -19,7 +19,7 @@
     <div class="container" style="margin-top: 30px;" id="offers-list">
         {% for offer in offers %}
         
-        <a data-toggle="modal" data-target="#exampleModal" data-offerid="${data[i]['id']}" data-whatever="${data[i]['merchant_name']}">
+        <a data-toggle="modal" data-target="#exampleModal" data-offerid="{{offer.id}}" data-whatever="{{merchant}}">
             <div class="card">
               <div class="child">
                 <h2>ID: {{offer.id}}</h2>
@@ -162,6 +162,16 @@ h4 {
 
     </style>
     <script>
+      $('#exampleModal').on('shown.bs.modal', function (event) {
+        var button = $(event.relatedTarget) // Button that triggered the modal
+        var recipient = button.data('whatever')
+        var offer=button.data('offerid') // Extract info from data-* attributes
+        // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+        // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+        var modal = $(this)
+        modal.find('#confirmation-msg').text('Confirm order amount and offer validity with ' + recipient)
+        modal.find('#offerId').val(offer)
+      })
         var htmlLink = "http://maps.google.com/?q=" + "{{merchant_address}}";
         console.log("{{merchant_address}}")
         document.getElementById("maps-link").setAttribute("href", htmlLink);
