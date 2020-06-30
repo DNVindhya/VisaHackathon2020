@@ -55,6 +55,12 @@ def view_merchants(request):
 
 @login_required
 @consumer_required
+def view_wallet(request):
+	context={}
+	return render(request,'consumers/cons_wallet.html',context)
+
+@login_required
+@consumer_required
 def earn_karma_points(request):
 	print("checked")
 	user=request.user.user_consumer
@@ -99,7 +105,8 @@ def earn_offers(request, pk):
 	user=request.user.user_consumer
 	merchant = list(Merchant.objects.filter(id = pk).values())
 	print(merchant)
-	context = {'offers': offers, 'merchant': merchant[0]['name'], 'merchant_address': merchant[0]['address'],'user':user}
+	merchant_obj=Merchant.objects.get(id=pk)
+	context = {'offers': offers, 'merchant': merchant[0]['name'], 'merchant_address': merchant[0]['address'],'user':user,'merchant_obj':merchant_obj}
 	return render(request,'consumers/cons_earn_offers.html',context)
 	
 @login_required
@@ -192,6 +199,17 @@ def process_payment(request):
 	print(card_details)
 	return JsonResponse('Payment Complete',safe=False);
 
+@login_required
+@consumer_required
 def payment_success(request):
 	context={}
 	return render(request,'consumers/cons_payment_success.html',context)
+
+@login_required
+@consumer_required
+def pay_and_earn(request):
+	order_amount=float(request.POST.get('order_amount'))
+	merchant_id=request.POST.get('merchantId')
+	merchant=Merchant.objects.get(id=merchant_id)
+	context={'order_amount':order_amount}
+	return render(request,'consumers/cons_pay.html',context)
