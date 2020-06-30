@@ -37,6 +37,7 @@ const displayCharacters = (merchants) => {
                 <li class="character">
                     <h6>${merchant.merchant_name}</h6>
                     <p>Address: ${merchant.address}</p>
+                    <p>Distance:${merchant.distance}</p>
                     <p>Offers: ${merchant.offers}</p>
                     </button>
                 </li>
