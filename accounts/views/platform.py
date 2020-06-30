@@ -8,7 +8,7 @@ class SignUpView(TemplateView):
 def home(request):
     if request.user.is_authenticated:
         if request.user.is_merchant:
-            return redirect('merchants/')
+            return redirect('merchdashboard/')
         elif request.user.is_consumer:
             return redirect('/customer/')
         else:

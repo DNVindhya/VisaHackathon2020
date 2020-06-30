@@ -79,8 +79,9 @@ def earn_karma_points(request):
 		merch_loc=(merchant.latitude, merchant.longitude) 
 		dictval={}
 		print(merchant)
-		dictval["merchant_id"] = merchant.id
-		dictval["merchant_name"]=merchant.name
+		#print(merchant.id)
+		dictval["merchant_id"] = merchant.username
+		dictval["merchant_name"]=merchant.first_name
 		dictval["address"]=merchant.address
 		if merchant.latitude is not None:
 			dictval["distance"]=geodesic(user_loc, merch_loc).miles
@@ -155,7 +156,7 @@ def avail_karma_points(request):
 			offer_list.append(offer)
 	#print(offer_list)
 
-	return JsonResponse(offer_list,safe=False);
+	return JsonResponse(offer_list,safe=False)
 
 @login_required
 @consumer_required

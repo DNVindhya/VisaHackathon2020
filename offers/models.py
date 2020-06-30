@@ -1,23 +1,24 @@
 from django.db import models
 from django.conf import settings
+from accounts.models import Merchant
 
 # Create your models here.
-class Merchant(models.Model):
-	user=models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True,blank=True)
-	name = models.CharField(max_length = 200, null = True)
-	annual_revenue = models.IntegerField(null = True)
-	business_category = models.CharField(max_length = 200, null = True)
-	email = models.EmailField(max_length = 200, null = True)
-	password = models.CharField(max_length = 200, null = True)
-	address = models.CharField(max_length = 200, null = True)
-	card_details = models.IntegerField(null = True)
-	date_created = models.DateTimeField(auto_now_add= True, null = True)
-	latitude = models.DecimalField(max_digits=22, decimal_places=16,null=True,blank=True)
-	longitude = models.DecimalField(max_digits=22, decimal_places=16,null=True,blank=True)
+# class Merchant(models.Model):
+# 	user=models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True,blank=True)
+# 	name = models.CharField(max_length = 200, null = True)
+# 	annual_revenue = models.IntegerField(null = True)
+# 	business_category = models.CharField(max_length = 200, null = True)
+# 	email = models.EmailField(max_length = 200, null = True)
+# 	password = models.CharField(max_length = 200, null = True)
+# 	address = models.CharField(max_length = 200, null = True)
+# 	card_details = models.IntegerField(null = True)
+# 	date_created = models.DateTimeField(auto_now_add= True, null = True)
+# 	latitude = models.DecimalField(max_digits=22, decimal_places=16,null=True,blank=True)
+# 	longitude = models.DecimalField(max_digits=22, decimal_places=16,null=True,blank=True)
 
 
-	def __str__(self):
-	    return self.name
+# 	def __str__(self):
+# 	    return self.name
 
 class Offers(models.Model):
 	merchant = models.ForeignKey(Merchant,null = True, on_delete = models.CASCADE)
