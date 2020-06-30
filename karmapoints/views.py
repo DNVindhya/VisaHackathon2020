@@ -29,6 +29,8 @@ def view_karma_points(request):
 def view_orders(request):
 	user=request.user.user_consumer
 	orders=Orders.objects.filter(consumer=user).order_by('-order_date')
+	context = {'orders': orders}
+	print(orders)
 	return render(request,'consumers/cons_orders.html',context)
 
 
