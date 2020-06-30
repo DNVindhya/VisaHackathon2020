@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.shortcuts import render
-from .models import *
+from .models import Orders
 from offers.models import *
 from django.http import JsonResponse
 import json
@@ -23,6 +23,16 @@ def view_karma_points(request):
 	data["current_karma_points"]=current_karma_points
 	data["transactions"]=order_json
 	return JsonResponse(data,safe=False);
+
+@login_required
+@consumer_required
+def view_orders(request):
+	user=request.user.user_consumer
+	orders=Orders.objects.filter(consumer=user).order_by('-order_date')
+	context = {'orders': orders}
+	print(orders)
+	return render(request,'consumers/cons_orders.html',context)
+
 
 def get_orders(request):
 	user=request.user.merchant
@@ -69,7 +79,7 @@ def earn_karma_points(request):
 		merch_loc=(merchant.latitude, merchant.longitude) 
 		dictval={}
 		print(merchant)
-		print(merchant.id)
+		#print(merchant.id)
 		dictval["merchant_id"] = merchant.username
 		dictval["merchant_name"]=merchant.first_name
 		dictval["address"]=merchant.address
@@ -79,6 +89,7 @@ def earn_karma_points(request):
 			dictval["distance"]=100000
 		dictval["offers"]=list(Offers.objects.filter(merchant=merchant).values())
 		listofmerchants.append(dictval)
+	print(listofmerchants)
 	return JsonResponse(listofmerchants,safe=False);
 
 
@@ -167,3 +178,21 @@ def confirm_order(request):
 	#final_amount=order_amount
 	context={'order_amount':order_amount,'offer':offer,'final_amount':final_amount,'merchant':merchant,'user':user,'card_details':card_details}
 	return render(request,'consumers/cons_offer_profile.html',context)
+
+def process_payment(request):
+	merchant_id=request.POST.get('merchant_id')
+	consumer_id=request.POST.get('user_id')
+	offer_id=request.POST.get('offer_id')
+	card_id=request.POST.get('card_details_id')
+	offer = Offers.objects.get(id = offer_id)
+	card_details=Card_Details.objects.get(id=card_id)
+	merchant=Merchant.objects.get(id=merchant_id)
+	user=request.user.user_consumer
+	print(merchant)
+	print(offer)
+	print(card_details)
+	return JsonResponse('Payment Complete',safe=False);
+
+def payment_success(request):
+	context={}
+	return render(request,'consumers/cons_payment_success.html',context)

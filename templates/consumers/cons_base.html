@@ -5,6 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     
+    <title>Customer Portal Dashboard | Local Support at Visa</title>
     <!-- META TAG PLACEHOLDER -->	
     {% block html_head %}{% endblock %}
         
@@ -13,7 +14,7 @@
     <link href="{% static 'css/bootstrap.css' %}" rel="stylesheet">
     <link href="{% static 'css/fontawesome-all.css' %}" rel="stylesheet">
     <link href="{% static 'css/swiper.css' %}" rel="stylesheet">
-	<link href="{% static 'css/magnific-popup.css' %}" rel="stylesheet">
+	  <link href="{% static 'css/magnific-popup.css' %}" rel="stylesheet">
     <link href="{% static 'css/styles.css' %}" rel="stylesheet">
     <link href="{% static 'css/merch_base.css' %}" rel="stylesheet">
 	
@@ -23,13 +24,16 @@
 </head>
 
 <body>
-        <div class="d-flex flex-column flex-md-row align-items-center px-md-4 border-bottom shadow-sm navbar">
-                <h5 class="my-0 mr-md-auto font-weight-normal"><a class="navbar-brand logo-image" href="/index"><img class="navbar-logo-image" src="{% static 'images/white-icon.png' %}" alt="alternative"/></a></h5>
-                <nav class="my-2 my-md-0 mr-md-3">
-                  <a class="p-2 text-light" href="#">Account</a>
-                </nav>
-                <a class="btn btn-outline-light" href="#">Log Out</a>
-              </div>
+  <div class="d-flex flex-column flex-md-row align-items-center px-md-4 border-bottom shadow-sm navbar" style="font-size: 75%;">
+          <h4 class="my-0 mr-md-auto font-weight-bold text-light app-title"><a class="navbar-brand logo-image" href="/customer/"><img class="navbar-logo-image" src="{% static 'images/white-icon.png' %}" alt="alternative"></a> Local Support</h4>
+          <nav class="my-2 my-md-0 mr-md-3">
+              <a class="p-2 text-light nav-link" href="/customer/">Home</a>
+            </nav>
+          <nav class="my-2 my-md-0 mr-md-3">
+            <a class="p-2 text-light nav-link" href="/consaccount">Account</a>
+          </nav>
+          <a class="btn btn-outline-light nav-link" href="{% url 'logout' %}">Log Out</a>
+        </div>
     <!--nav class="navbar fixed-top flex-md-nowrap p-0 shadow">
         <a class="navbar-brand logo-image" href="/index"><img class="navbar-logo-image" src="{% static 'images/white-icon.png' %}" alt="alternative"></a>
         <ul class="navbar-nav px-3">
@@ -48,28 +52,28 @@
       <div class="row">
         <nav class="col-md-2 d-none d-md-block bg-light sidebar">
           <div class="sidebar-sticky">
-            <ul class="nav flex-column" style="height: 1000px;">
+            <ul class="nav flex-column" style="height: 1000px; font-size: 75%; margin-top: 15px;">
               <li class="nav-item">
-                <a class="nav-link active" href="/merchdashboard">
-                  <span data-feather="user-check"></span>
+                <a class="nav-link active" href="/customer/view_merchants/">
+                  <span><img class="left-navbar-icon" src="https://img.icons8.com/doodle/48/000000/medal.png"/></span>
                   Earn Points <span class="sr-only">(current)</span>
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="/merchorders">
-                  <span data-feather="unlock"></span>
+                <a class="nav-link" href="/customer/">
+                  <span><img class="left-navbar-icon" src="https://img.icons8.com/ultraviolet/40/000000/discount.png"/></span>
                   Avail Offers
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="/merchproducts">
-                  <span data-feather="credit-card"></span>
+                <a class="nav-link" href="/conswallet">
+                  <span><img class="left-navbar-icon" src="https://img.icons8.com/cotton/64/000000/card-wallet.png"/></span>
                   My Wallet
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="/merchcustomers">
-                  <span data-feather="file"></span>
+                <a class="nav-link" href="/customer/view_orders/">
+                  <span><img class="left-navbar-icon" src="https://img.icons8.com/dusk/64/000000/purchase-order.png"/></span>
                   Orders
                 </a>
               </li>
@@ -100,7 +104,14 @@
     <script>
       feather.replace()
     </script>
-
+      <style>
+        body {
+          background: #b5ced8;
+        }
+        .left-navbar-icon {
+          padding-right: 8px;
+        }
+      </style>
     {% block scripts %}{% endblock %}
 
   </body>
