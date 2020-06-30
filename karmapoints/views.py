@@ -175,3 +175,21 @@ def confirm_order(request):
 	#final_amount=order_amount
 	context={'order_amount':order_amount,'offer':offer,'final_amount':final_amount,'merchant':merchant,'user':user,'card_details':card_details}
 	return render(request,'consumers/cons_offer_profile.html',context)
+
+def process_payment(request):
+	merchant_id=request.POST.get('merchant_id')
+	consumer_id=request.POST.get('user_id')
+	offer_id=request.POST.get('offer_id')
+	card_id=request.POST.get('card_details_id')
+	offer = Offers.objects.get(id = offer_id)
+	card_details=Card_Details.objects.get(id=card_id)
+	merchant=Merchant.objects.get(id=merchant_id)
+	user=request.user.user_consumer
+	print(merchant)
+	print(offer)
+	print(card_details)
+	return JsonResponse('Payment Complete',safe=False);
+
+def payment_success(request):
+	context={}
+	return render(request,'consumers/cons_payment_success.html',context)
