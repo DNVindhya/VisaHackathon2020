@@ -14,7 +14,9 @@ from django.utils.decorators import method_decorator
 from django.views.generic import (CreateView, TemplateView)
 
 from ..decorators import merchant_required
-from ..forms import MerchantSignUpForm, MerchantUserEditForm, MerchantDetailsEditForm, MerchantAddressEditForm
+from ..forms import MerchantSignUpForm, MerchantUserEditForm, MerchantDetailsEditForm, MerchantAddressEditForm, MerchantCardEditForm
+
+from ..models import Card_Details
 
 User = get_user_model()
 
@@ -41,9 +43,6 @@ class MerchantSignUpView(CreateView):
 @merchant_required
 def edit(request):
     if request.method == 'POST':
-        # for key, value in request.POST.items():
-        #     print('Key:',key) 
-        #     print('Value:',value)
         user_form = MerchantUserEditForm(instance=request.user,
                                  data=request.POST)
         profile_form = MerchantDetailsEditForm(
@@ -51,44 +50,33 @@ def edit(request):
                                     data=request.POST)
         address_form = MerchantAddressEditForm(
                                     instance=request.user.user_merchant,
-                                    data=request.POST)                  
-
-        if user_form.is_valid() and profile_form.is_valid() and address_form.is_valid():
+                                    data=request.POST)
+        card_details, created = Card_Details.objects.get_or_create(user=request.user)
+        card_form = MerchantCardEditForm(instance=card_details,
+                                    data=request.POST)
+        if user_form.is_valid() and profile_form.is_valid() and address_form.is_valid() and card_form.is_valid():
             user_form.save()
             #user = password_change.save()
             #update_session_auth_hash(request, user)  
             profile_form.save()
             address_form.save()
-        else: 
-            user_form = MerchantUserEditForm(instance=request.user)
-            profile_form = MerchantDetailsEditForm(
-                                    instance=request.user.user_merchant)
-            address_form = MerchantAddressEditForm(instance=request.user.user_merchant)
-
-        password_change = PasswordChangeForm(request.user, request.POST)
-
-        if password_change.is_valid():
-            user = password_change.save()
-            update_session_auth_hash(request, user) 
-            # user_form = MerchantUserEditForm(instance=request.user)
-            # profile_form = MerchantDetailsEditForm(
-            #                         instance=request.user.user_merchant)
-            # address_form = MerchantAddressEditForm(instance=request.user.user_merchant)
-        else:
-            password_change = PasswordChangeForm(request.user)
-
+            card_form.save()
+       
     else:
         user_form = MerchantUserEditForm(instance=request.user)
         profile_form = MerchantDetailsEditForm(
                                     instance=request.user.user_merchant)
         address_form = MerchantAddressEditForm(instance=request.user.user_merchant)
         password_change = PasswordChangeForm(request.user)
+        card_detail, created = Card_Details.objects.get_or_create(user=request.user)
+        card_form = MerchantCardEditForm(instance=card_detail)
+
     return render(request,
                   'merchants/merch_account.html',
                   {'user_form': user_form,
                    'profile_form': profile_form,
                    'address_form': address_form,
-                   'password_change':password_change})
+                   'card_form':card_form})
 
 def change_password(request):
     if request.method == 'POST':

@@ -42,7 +42,7 @@ class Merchant(models.Model):
     #card_details = CardNumberField('card number')
     #cc_expiry = CardExpiryField('expiration date')
     #cc_code = SecurityCodeField('security code')
-    card_details = models.IntegerField(null = True)
+    #card_details = models.IntegerField(null = True)
     date_created = models.DateTimeField(auto_now_add= True, null = True)
     latitude = models.DecimalField(max_digits=22, decimal_places=16,null=True,blank=True)
     longitude = models.DecimalField(max_digits=22, decimal_places=16,null=True,blank=True) 
@@ -56,5 +56,5 @@ class Card_Details(models.Model):
 	expiry_data=models.CharField(max_length=7)
 
 	def __str__(self):
-		return str(self.id)
+		return self.user.usernames
 
