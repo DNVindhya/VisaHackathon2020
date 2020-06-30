@@ -35,8 +35,8 @@ def view_orders(request):
 
 
 def get_orders(request):
-	user=request.user.merchant
-	orders=Orders.objects.filter(merchant=user).order_by('-order_date')
+	user=request.user.user_merchant
+	orders = Orders.objects.filter(merchant=user).order_by('-order_date')
 	context = {'orders': orders}
 	return context
 

@@ -40,11 +40,11 @@ def create_update_offer(request, pk=None):
 			offer.offer_end_date = last_day
 
 			# Merchant creating the offer
-			offer.merchant = request.user.merchant
+			offer.merchant = request.user.user_merchant
 			offer.save()
 
 			# redirect to show newly created offer
-			return redirect('/offers/view_offers')
+			return redirect('/merchdashboard')
 	# If this is a GET (or any other method) create the default form and populate values (only for an update)
 	else:
 		# Get offer details for id passed for updating
@@ -80,6 +80,6 @@ def delete_offer(request,pk):
 	offer=Offers.objects.filter(id=pk)
 	if request.method =="POST":
 		offer.delete()
-		return redirect('/offers/view_offers')
+		return redirect('/merchdashboard')
 	context={'offer':offer, 'offerid':pk}
 	return render(request,'offers/delete_offer.html',context)
