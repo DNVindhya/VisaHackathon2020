@@ -69,7 +69,6 @@ def earn_karma_points(request):
 		merch_loc=(merchant.latitude, merchant.longitude) 
 		dictval={}
 		print(merchant)
-		print(merchant.id)
 		dictval["merchant_id"] = merchant.id
 		dictval["merchant_name"]=merchant.name
 		dictval["address"]=merchant.address
@@ -79,6 +78,7 @@ def earn_karma_points(request):
 			dictval["distance"]=100000
 		dictval["offers"]=list(Offers.objects.filter(merchant=merchant).values())
 		listofmerchants.append(dictval)
+	print(listofmerchants)
 	return JsonResponse(listofmerchants,safe=False);
 
 
