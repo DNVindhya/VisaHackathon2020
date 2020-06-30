@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'karmapoints',
     'accounts',
     'crispy_forms', #3rd party
+    'payment',
 ]
 
 MIDDLEWARE = [
