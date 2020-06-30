@@ -5,11 +5,25 @@ from django.forms.utils import ValidationError
 
 from accounts.models import ( Consumer, Merchant, User)
 
+# COUNTRY_CHOICES =[
+#     ("1", "United States ")   
+# ] 
 
+STATE_CHOICES =(
+    ('', 'Choose...'),
+    ('CF', 'California'),
+    ('NY', 'New York')
+)
+
+COUNTRY_CHOICES =(
+    ('', 'Choose...'),
+    ('US', 'United States'),
+)
 class MerchantSignUpForm(UserCreationForm):
     class Meta(UserCreationForm.Meta):
         model = User
-        #fields = ('username', 'first_name', 'last_name', 'email')
+        fields = ('username', 'first_name', 'email')
+        labels = { 'first_name' : 'Store Name'}
 
     def save(self, commit=True):
         user = super().save(commit=False)
@@ -33,3 +47,22 @@ class ConsumerSignUpForm(UserCreationForm):
         user.save()
         Consumer.objects.create(user=user)
         return user
+
+class MerchantUserEditForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ('first_name', 'email')
+        labels = { 'first_name' : 'Store Name'}
+
+class MerchantDetailsEditForm(forms.ModelForm):
+    class Meta:
+        model = Merchant
+        fields = ('card_details', 'address')
+
+class MerchantAddressEditForm(forms.ModelForm):
+    #country = forms.ChoiceField(choices = COUNTRY_CHOICES)
+    state = forms.ChoiceField(choices = STATE_CHOICES)
+    class Meta:
+        model = Merchant
+        fields = ('state', 'city', 'zip_code')
+

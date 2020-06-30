@@ -3,6 +3,10 @@ from django.contrib.auth.models import User
 from offers.forms import CreateUpdateOfferForm
 from datetime import datetime, timedelta, date
 from .models import *
+from django.contrib.auth.decorators import login_required
+#from django.utils.decorators import method_decorator
+from accounts.decorators import merchant_required
+
 
 # Create your views here.
 def merchant(request):
@@ -60,9 +64,12 @@ def create_update_offer(request, pk=None):
 	}
 	return render(request, 'offers/create_offers.html', context)
 
+@login_required
+@merchant_required
 def get_offers(request):
-	user=request.user.merchant
-	print(user.id)
+	user=request.user.user_merchant
+	print("Print details of the merchant ------------")
+	print(user)
 	offers=Offers.objects.filter(merchant=user)
 	print(offers)
 	context = {'offers':offers}

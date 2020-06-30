@@ -23,15 +23,17 @@
 </head>
 
 <body>
+    {% load crispy_forms_tags %}
+
         <div class="d-flex flex-column flex-md-row align-items-center px-md-4 border-bottom shadow-sm navbar">
                 <h4 class="my-0 mr-md-auto font-weight-bold text-light app-title"><a class="navbar-brand logo-image" href="/index"><img class="navbar-logo-image" src="{% static 'images/white-icon.png' %}" alt="alternative"></a> Local Support</h4>
                 <nav class="my-2 my-md-0 mr-md-3">
-                    <a class="p-2 text-light nav-link" href="/merchdashboard">Home</a>
+                    <a class="p-2 text-light nav-link" href="{% url "merchants_dashboard" %}">Home</a>
                   </nav>
                 <nav class="my-2 my-md-0 mr-md-3">
-                  <a class="p-2 text-light nav-link" href="/merchaccount">Account</a>
+                  <a class="p-2 text-light nav-link" href="{% url "merchants_account" %}">Account</a>
                 </nav>
-                <a class="btn btn-outline-light nav-link" href="#">Log Out</a>
+                <a class="btn btn-outline-light nav-link" href="{% url "logout" %}">Log Out</a>
               </div>
     <!--nav class="navbar fixed-top flex-md-nowrap p-0 shadow">
         <a class="navbar-brand logo-image" href="/index"><img class="navbar-logo-image" src="{% static 'images/white-icon.png' %}" alt="alternative"></a>
@@ -51,69 +53,99 @@
       <div class="row">
 
         <main role="main" class="col-md-12 ml-sm-auto col-lg-15 px-4">
-                <div class="headline" id="store-details-account" style="margin-top: 1rem;">Personal and Store Details</div>
-                <div class="row mb-2">
-                  <div class="col-md-12">
+            <div class="headline" id="store-details-account" style="margin-top: 1rem;">Personal and Store Details</div>
+            <div class="row mb-2">
+                <div class="col-md-12">
                     <div class="card flex-md-row mb-4 shadow-sm h-md-250">
-                      <div class="card-body d-flex flex-column align-items-start">
-                            <form class="needs-validation" novalidate>
-                            
+                        <div class="card-body d-flex flex-column align-items-start">
+                            <form method="POST" name="details_form" novalidate>
+                                {% csrf_token %}
+                                {% for field in user_form %}
                                 <div class="mb-3">
-                                    <label for="username">Store Name</label>
-                                    <input type="text" class="form-control" id="lastName" placeholder="" value="" required>
-                                    <div class="invalid-feedback">
-                                    Valid last name is required.
-                                    </div>
+                                    <div class="invalid-feedback">{{ field.errors }}</div>
+                                    {{ field | as_crispy_field   }}
+                                    {% if field.help_text %}
+                                    <p class="help">{{ field.help_text|safe }}</p>
+                                    {% endif %}
                                 </div>
-                            
+                                {% endfor %}
+        
+                                {% for field in profile_form %}
                                 <div class="mb-3">
-                                    <label for="email">Email <span class="text-muted">(Optional)</span></label>
-                                    <input type="email" class="form-control" id="email" placeholder="">
-                                    <div class="invalid-feedback">
-                                        Please enter a valid email address for shipping updates.
-                                    </div>
+                                    <div class="invalid-feedback">{{ field.errors }}</div>
+                                    {{ field |as_crispy_field  }}
+                                    {% if field.help_text %}
+                                    <p class="help">{{ field.help_text|safe }}</p>
+                                    {% endif %}
                                 </div>
-                            
-                                <div class="mb-3">
-                                    <label for="address">Address</label>
-                                    <input type="text" class="form-control" id="address" placeholder="" required>
-                                    <div class="invalid-feedback">
-                                        Please enter your shipping address.
-                                    </div>
-                                </div>
-                            
+                                {% endfor %}
+                                <!--<div class="mb-3">
+                                            <label for="username">Store Name</label>
+                                            <input type="text" class="form-control" id="lastName" placeholder="" value="" required>
+                                            <div class="invalid-feedback">
+                                            Valid last name is required.
+                                            </div>
+                                        </div>
+                                    
+                                        <div class="mb-3">
+                                            <label for="email">Email <span class="text-muted">(Optional)</span></label>
+                                            <input type="email" class="form-control" id="email" placeholder="">
+                                            <div class="invalid-feedback">
+                                                Please enter a valid email address for shipping updates.
+                                            </div>
+                                        </div>
+                                    
+                                        <div class="mb-3">
+                                            <label for="address">Address</label>
+                                            <input type="text" class="form-control" id="address" placeholder="" required>
+                                            <div class="invalid-feedback">
+                                                Please enter your shipping address.
+                                            </div>
+                                        </div>-->
+        
                                 <div class="row">
+        
+                                    {% for field in address_form %}
                                     <div class="col-md-5 mb-3">
-                                        <label for="country">Country</label>
-                                        <select class="custom-select d-block w-100" id="country" required>
-                                        <option value="">Choose...</option>
-                                        <option>United States</option>
-                                        </select>
-                                        <div class="invalid-feedback">
-                                        Please select a valid country.
-                                        </div>
+                                        <div class="invalid-feedback">{{ field.errors }}</div>
+                                        {{ field |as_crispy_field  }}
+                                        {% if field.help_text %}
+                                        {% endif %}
                                     </div>
-                                    <div class="col-md-4 mb-3">
-                                        <label for="state">State</label>
-                                        <select class="custom-select d-block w-100" id="state" required>
-                                        <option value="">Choose...</option>
-                                        <option>California</option>
-                                        </select>
-                                        <div class="invalid-feedback">
-                                        Please provide a valid state.
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3 mb-3">
-                                        <label for="zip">Zip</label>
-                                        <input type="text" class="form-control" id="zip" placeholder="" required>
-                                        <div class="invalid-feedback">
-                                        Zip code required.
-                                        </div>
-                                    </div>
+                                    {% endfor %}
+        
+                                    <!-- <div class="col-md-5 mb-3">
+                                                <label for="country">Country</label>
+                                                <select class="custom-select d-block w-100" id="country" required>
+                                                <option value="">Choose...</option>
+                                                <option>United States</option>
+                                                </select>
+                                                <div class="invalid-feedback">
+                                                Please select a valid country.
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4 mb-3">
+                                                <label for="state">State</label>
+                                                <select class="custom-select d-block w-100" id="state" required>
+                                                <option value="">Choose...</option>
+                                                <option>California</option>
+                                                </select>
+                                                <div class="invalid-feedback">
+                                                Please provide a valid state.
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3 mb-3">
+                                                <label for="zip">Zip</label>
+                                                <input type="text" class="form-control" id="zip" placeholder="" required>
+                                                <div class="invalid-feedback">
+                                                Zip code required.
+                                                </div>
+                                            </div>-->
                                 </div>
+                                
                                 <button class="btn btn-primary" type="submit">Save changes</button>
                             </form>
-                      </div>
+                        </div>
                     </div>
                   </div>
                 </div>
@@ -259,10 +291,24 @@
                         <div class="col-md-12">
                             <div class="card flex-md-row mb-4 shadow-sm h-md-250">
                                 <div class="card-body d-flex flex-column align-items-start">
-                                    <form class="needs-validation" novalidate>
+                                    <form method="get" action="{% url "merrchants_change_password" %}">
+                                        <button class="btn btn-primary" type="submit">Click Here</button>
+                                    </form>
+                                    
+                                    <!--<form method="POST" name="pwd_change_form" novalidate>
+                                        {% csrf_token %}
+                                        {% for field in password_change %}
                                         <div class="mb-3">
+                                            <div class="invalid-feedback">{{ field.errors }}</div>
+                                            {{ field |as_crispy_field  }}
+                                            {% if field.help_text %}
+                                            {% endif %}
+                                        </div>
+                                        {% endfor %}-->
+                                        <!--<div class="mb-3">
                                             <label for="password">Current password</label>
-                                            <input type="password" class="form-control" id="current-password" placeholder="" required>
+                                            <input type="password" class="
+                                            -control" id="current-password" placeholder="" required>
                                             <div class="invalid-feedback">
                                                 Please enter your shipping address.
                                             </div>
@@ -280,9 +326,9 @@
                                             <div class="invalid-feedback">
                                                 Please enter your shipping address.
                                             </div>
-                                        </div>
-                                        <button class="btn btn-primary" type="submit">Submit</button>
-                                    </form>
+                                        </div>-->
+                                        <!--<button class="btn btn-primary" type="submit">Submit</button>
+                                    </form>-->
                                 </div>
                             </div>
                         </div>

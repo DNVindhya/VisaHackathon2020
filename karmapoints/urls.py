@@ -9,4 +9,10 @@ urlpatterns = [
 	path('earn_karma_points/',views.earn_karma_points,name="earn_karma_points"),
 	path('earn_offers/<str:pk>/', views.earn_offers, name="earn_offers"),
 	path('confirm_order/', views.confirm_order, name="confirm_order"),
+	path('view_orders/',views.view_orders,name="view_orders"),
+	path('',views.view_offers,name="view_offers"),
+	path('view_merchants/',views.view_merchants,name="view_merchants"),
+	path('process_payment/',views.process_payment,name="process_payment"),
+	path('payment_success/',views.payment_success,name="payment_success"),
+
 ]

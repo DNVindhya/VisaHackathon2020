@@ -4,22 +4,22 @@
     {% block content %}
 
     <center>
-        <h2><strong>Merchant Name: </strong>{{merchant}}</h2>
+        <h2 style="text-decoration: none;"><strong>Merchant Name: </strong>{{merchant}}</h2>
         <div style="padding-bottom: 20px;">
           <h3 id="confirmation-msg" style="font-size: 15px;"></h3>
-            <label for="recipient-name" class="col-form-label">Enter bill amount at store:</label>
-            <input type="text" name="order_amount" id="recipient-name" style="height: 37px;">
+            <label for="bill-amt" class="col-form-label">Enter bill amount at store:</label>
+            <input type="text" name="order_amount" id="bill-amt" style="height: 37px;">
             <button id="tag-form-submit" type="submit" class="btn btn-dark">Make Payment</button>
         </div>
         <hr style="padding-bottom: 20px;"/>
-        <h2>Use Karma Points Balance: 60 Points</h2>
-        <a id="maps-link" href=""><h2 id="location-string" style="text-decoration: none;">Merchant Location: {{merchant_address}}</h2></a>
+        <h2 style="text-decoration: none;">Use Karma Points Balance: {{user.current_karma_points}}</h2>
+        <a id="maps-link"><h2 id="location-string" style="text-decoration: none;">Merchant Location: {{merchant_address}}</h2></a>
         
     </center>
     <div class="container" style="margin-top: 30px;" id="offers-list">
         {% for offer in offers %}
         
-        <a data-toggle="modal" data-target="#exampleModal" data-offerid="${data[i]['id']}" data-whatever="${data[i]['merchant_name']}">
+        <a data-toggle="modal" data-target="#exampleModal" data-offerid="{{offer.id}}" data-whatever="{{merchant}}">
             <div class="card">
               <div class="child">
                 <h2>ID: {{offer.id}}</h2>
@@ -47,8 +47,8 @@
       <div class="modal-body">
         <h3 id="confirmation-msg" style="font-size: 15px;"></h3>
         <!--<form id="tagForm" action="/customer/confirm_order/" method="POST">{% csrf_token %}-->
-            <label for="recipient-name" class="col-form-label">Enter bill amount at store:</label>
-            <input type="text" class="form-control" name="order_amount" id="recipient-name">
+            <label for="offer-bill-amt" class="col-form-label">Enter bill amount at store:</label>
+            <input type="text" class="form-control" name="order_amount" id="offer-bill-amt">
             <input type="hidden" name="offerId" id="offerId" value=""/>
         <!--</form>-->
       </div>
@@ -162,8 +162,19 @@ h4 {
 
     </style>
     <script>
-        var htmlLink = "http://maps.google.com/?q=" + merchant_address;
-        console.log(merchant_address);
-        document.getElementById("maps-link").setAttribute("href", "#BOOM");
+      $('#exampleModal').on('shown.bs.modal', function (event) {
+        var button = $(event.relatedTarget) // Button that triggered the modal
+        var recipient = button.data('whatever')
+        var offer=button.data('offerid') // Extract info from data-* attributes
+        // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+        // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+        var modal = $(this)
+        modal.find('#confirmation-msg').text('Confirm order amount and offer validity with ' + recipient)
+        modal.find('#offerId').val(offer)
+      })
+        var htmlLink = "http://maps.google.com/?q=" + "{{merchant_address}}";
+        console.log("{{merchant_address}}")
+        document.getElementById("maps-link").setAttribute("href", htmlLink);
+        document.getElementById("maps-link").setAttribute("target", "__blank");
     </script>
     {% endblock %}

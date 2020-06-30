@@ -1,19 +1,18 @@
-<!---->
-<!DOCTYPE html>
-<html lang="en">
   {% extends "consumers/cons_base.html" %}
   {% load static %} 
-<head>
-  {% block content %}
+
+  {% block html_head %}
   <title>Wallet Test</title>
   <meta charset="UTF-8">
   <link href="{% static 'css/reset.css' %}" rel="stylesheet">
   <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700,600|Roboto' rel='stylesheet' type='text/css'>
   <link href="{% static 'css/wallet.css' %}" rel="stylesheet">
-</head>
+  {% endblock %}
 
-
-<body>
+  {% block content %}
+  <center>
+  <h2 class="border-bottom" style="font-family: inherit; text-decoration: none; font-size: 35px; margin-top: 18px; color: #000; line-height: 1.25; padding-bottom: 20px;"><strong>My Wallet</strong></h2>
+</center>
   <main class="app">
     <section class="app__loading">
       <h2>Loading....</h2>
@@ -49,9 +48,10 @@
       </aside>
     </section>
   </main>
-  <script src="{% static 'js/data.js' %}"></script>
-  <script src="{% static 'js/wallet.js' %}"></script>
-</body>
 
-</html>
+{% endblock %}
+
+{% block scripts %}
+<script src="{% static 'js/data.js' %}"></script>
+<script src="{% static 'js/wallet.js' %}"></script>
 {% endblock %}
