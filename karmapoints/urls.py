@@ -15,6 +15,8 @@ urlpatterns = [
 	path('process_payment/',views.process_payment,name="process_payment"),
 	path('payment_success/',views.payment_success,name="payment_success"),
 	path('pay_and_earn/',views.pay_and_earn,name="pay_and_earn"),
-	path('wallet/',views.wallet,name="wallet")
+	path('wallet/',views.wallet,name="wallet"),
+	path('account/',views.edit, name="consumers_account"),
+	path('password/', views.change_password, name="customer_change_password")
 
 ]

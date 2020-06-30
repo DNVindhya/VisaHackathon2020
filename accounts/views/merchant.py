@@ -80,6 +80,8 @@ def edit(request):
                    'address_form': address_form,
                    'card_form':card_form})
 
+@login_required
+@merchant_required
 def change_password(request):
     if request.method == 'POST':
         form = PasswordChangeForm(request.user, request.POST)

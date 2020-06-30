@@ -28,8 +28,12 @@
                         <form id="NormalsignUpForm" method="post">
                             {% csrf_token %}
                             <input type="hidden" name="next" value="{{ next }}">
-                            {{ form|crispy }}
-                            
+                            {% for field in form %}
+                            <div class="mb-3">
+                                <div class="help-block with-errors">{{ field.errors }}</div>
+                                {{ field | as_crispy_field   }}
+                            </div>
+                            {% endfor %}
                             <!--<div class="form-group">
                                 <input type="email" class="form-control-input" id="semail" required>
                                 <label class="label-control" for="semail">Email</label>
