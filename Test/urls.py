@@ -117,7 +117,7 @@ urlpatterns = [
     path('consearn/', consearn),
     path('consavail/', consavail),
     path('conswallet/', conswallet),
-    path('consaccount/', consaccount),
+    #path('consaccount/', consaccount),
     path('consorders/', consorders),
     path('consofferprofile/', consofferprofile),
     path('consearnpoints/', consearnpoints),

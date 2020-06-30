@@ -10,6 +10,10 @@ from geopy.distance import geodesic
 from accounts.decorators import consumer_required
 from django.contrib.auth.decorators import login_required
 from accounts.models import Card_Details,User,Consumer, Merchant
+from karmapoints.forms import ConsumerUserEditForm, ConsumerDetailsEditForm, ConsumerCardEditForm
+from django.contrib.auth import get_user_model, update_session_auth_hash
+from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib import messages
 
 # Create your views here.
 @login_required
@@ -221,3 +225,56 @@ def pay_and_earn(request):
 	print(merchant_id)
 	context={}
 	return render(request,'consumers/cons_pay_and_earn.html',context)
+
+
+@login_required
+@consumer_required
+def edit(request):
+    if request.method == 'POST':
+        user_form = ConsumerUserEditForm(instance=request.user,
+                                 data=request.POST)
+        profile_form = ConsumerDetailsEditForm(
+                                    instance=request.user.user_consumer,
+                                    data=request.POST)
+        card_details, created = Card_Details.objects.get_or_create(user=request.user)
+        card_form = ConsumerCardEditForm(instance=card_details,
+                                    data=request.POST)
+        if user_form.is_valid() and profile_form.is_valid() and card_form.is_valid():
+            user_form.save()
+            #user = password_change.save()
+            #update_session_auth_hash(request, user)  
+            profile_form.save()
+            card_form.save()
+            # request.user.user_merchant.update_location()
+            # request.user.user_merchant.save()
+
+    else:
+        user_form = ConsumerUserEditForm(instance=request.user)
+        profile_form = ConsumerDetailsEditForm(
+                                    instance=request.user.user_consumer)
+        card_detail, created = Card_Details.objects.get_or_create(user=request.user)
+        card_form = ConsumerCardEditForm(instance=card_detail)
+
+    return render(request,
+                  'consumers/cons_account.html',
+                  {'user_form': user_form,
+                   'profile_form': profile_form,
+                   'card_form':card_form})
+
+@login_required
+@consumer_required
+def change_password(request):
+    if request.method == 'POST':
+        form = PasswordChangeForm(request.user, request.POST)
+        if form.is_valid():
+            user = form.save()
+            update_session_auth_hash(request, user)  # Important!
+            messages.success(request, 'Your password was successfully updated!')
+            #return redirect('change_password')
+        else:
+            messages.error(request, 'Please correct the error below.')
+    else:
+        form = PasswordChangeForm(request.user)
+    return render(request, 'consumers/cons_password.html', {
+        'form': form
+    })
