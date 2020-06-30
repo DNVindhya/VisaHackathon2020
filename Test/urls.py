@@ -68,6 +68,9 @@ def consofferprofile(request):
 def consearnpoints(request):
     return render(request, 'consumers/cons_earnpoints.html')
 
+def consaccount(request):
+    return render(request, 'consumers/cons_account.html')
+
 @login_required
 @merchant_required
 def merchdashboard(request):
@@ -90,8 +93,6 @@ def merchreport(request):
 def merchaccount(request):
     return render(request, 'merchants/merch_account.html')
 
-def custwallet(request):
-    return render(request, 'wallet.html')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -116,9 +117,8 @@ urlpatterns = [
     path('consearn/', consearn),
     path('consavail/', consavail),
     path('conswallet/', conswallet),
+    path('consaccount/', consaccount),
     path('consorders/', consorders),
     path('consofferprofile/', consofferprofile),
     path('consearnpoints/', consearnpoints),
 ]
-
-
