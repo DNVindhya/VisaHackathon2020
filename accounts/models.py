@@ -2,7 +2,14 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.utils.html import escape, mark_safe
 from creditcards.models import CardNumberField, CardExpiryField, SecurityCodeField
+from django_countries.fields import CountryField
+COUNTRY_CHOICES =( 
+    ("1", "USA") 
+) 
 
+STATE_CHOICES =( 
+    ("1", "California") 
+) 
 
 class User(AbstractUser):
     is_consumer = models.BooleanField(default=False)
@@ -21,6 +28,11 @@ class Merchant(models.Model):
     annual_revenue = models.IntegerField(null = True)
     business_category = models.CharField(max_length = 200, null = True)
     address = models.CharField(max_length = 200, null = True)
+    city = models.CharField(max_length = 200, null = True)
+    state = models.CharField(max_length = 200, null = True)
+    #country = CountryField(multiple=False)
+    #state = USStateField('state')
+    zip_code = models.CharField('zip code',null= True, max_length=5)
     #card_details = CardNumberField('card number')
     #cc_expiry = CardExpiryField('expiration date')
     #cc_code = SecurityCodeField('security code')
