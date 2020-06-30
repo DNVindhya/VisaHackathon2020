@@ -33,8 +33,8 @@ def earn_karma_points(request):
 		dictval={}
 		print(merchant)
 		print(merchant.id)
-		dictval["merchant_id"] = merchant.id
-		dictval["merchant_name"]=merchant.name
+		dictval["merchant_id"] = merchant.username
+		dictval["merchant_name"]=merchant.first_name
 		dictval["address"]=merchant.address
 		dictval["offers"]=list(Offers.objects.filter(merchant=merchant).values())
 		listofmerchants.append(dictval)
@@ -96,4 +96,4 @@ def avail_karma_points(request):
 			offer_list.append(offer)
 	#print(offer_list)
 
-	return JsonResponse(offer_list,safe=False);
+	return JsonResponse(offer_list,safe=False)

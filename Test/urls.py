@@ -23,6 +23,10 @@ from offers.views import get_offers
 from karmapoints.views import get_orders
 
 from accounts.views import platform, merchant, consumer
+from django.contrib.auth.decorators import login_required
+#from django.utils.decorators import method_decorator
+from accounts.decorators import merchant_required
+
 
 def homepage(request):
     return render(request, 'landing/index.html')
@@ -64,17 +68,25 @@ def consofferprofile(request):
 def consearnpoints(request):
     return render(request, 'consumers/cons_earnpoints.html')
 
+@login_required
+@merchant_required
 def merchdashboard(request):
     all_offers = get_offers(request)
     return render(request, 'merchants/merch_dashboard.html', all_offers)
 
+@login_required
+@merchant_required
 def merchorders(request):
     all_orders = get_orders(request)
     return render(request, 'merchants/merch_orders.html', all_orders)
 
+@login_required
+@merchant_required
 def merchreport(request):
     return render(request, 'merchants/merch_report.html')
 
+@login_required
+@merchant_required
 def merchaccount(request):
     return render(request, 'merchants/merch_account.html')
 
@@ -97,10 +109,10 @@ urlpatterns = [
     path('merchsignup/', merchsignup),
     path('offers/',include('offers.urls')),
     path('customer/',include('karmapoints.urls')),
-    path('merchdashboard/', merchdashboard),
+    path('merchdashboard/', merchdashboard, name='merchants_dashboard'),
     path('merchorders/', merchorders),
     path('merchreport/', merchreport),
-    path('merchaccount/', merchaccount),
+    #path('merchaccount/', merchaccount, name='merchants_account'),
     path('consearn/', consearn),
     path('consavail/', consavail),
     path('conswallet/', conswallet),
