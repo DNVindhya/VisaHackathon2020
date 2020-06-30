@@ -5,6 +5,11 @@ const merchantList = document.getElementById('merchantList');
 const searchBar = document.getElementById('searchBar');
 let listmerchants = [];
 
+function capitalizeFirstLetter(inputString) {
+    return inputString.charAt(0).toUpperCase() + inputString.slice(1);
+}
+  
+
 searchBar.addEventListener('keyup', (e) => {
     const searchString = e.target.value.toLowerCase();
 
@@ -33,12 +38,12 @@ const displayCharacters = (merchants) => {
     const htmlString = merchants
         .map((merchant) => {
             return `
-            <a href="/customer/earn_offers/${merchant.merchant_id}/">
+            <a href="/customer/earn_offers/${merchant.merchant_id}/" style="text-decoration: none!important;">
                 <li class="character">
-                    <h6>${merchant.merchant_name}</h6>
-                    <p>Address: ${merchant.address}</p>
-                    <p>Distance:${merchant.distance}</p>
-                    <p>Offers: ${merchant.offers}</p>
+                    <h4>${capitalizeFirstLetter(merchant.merchant_name)}</h4>
+                    <p>Address: <span style="font-weight:100; color: #3c3c3c;">${merchant.address}</span></p>
+                    <p style="float: left; margin-top: -10px;"><b>Distance:</b> <span style="font-weight:100; color: #3c3c3c;">${merchant.distance.toFixed(1)} miles</span></p>
+                    <p style="float: right; margin-top: -10px;"><b>Current Offers:</b> <span style="font-weight:100; color: #3c3c3c;">${merchant.offers.length}</span></p>
                     </button>
                 </li>
             </a>

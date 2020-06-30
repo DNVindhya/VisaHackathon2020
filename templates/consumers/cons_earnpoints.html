@@ -1,8 +1,6 @@
 {% extends "consumers/cons_base.html" %}
 {% load static %}
-<!DOCTYPE html>
 {% block content %}
-    <body>
         <div class="container">
             <h2 class="border-bottom" style="font-family: inherit; text-decoration: none; font-size: 35px; margin-top: 18px; color: #000; line-height: 1.25; padding-bottom: 20px;"><strong>View Merchants</strong></h2>
             
@@ -16,18 +14,19 @@
             </div>
             <ul id="merchantList"></ul>
         </div>
-        <script src="{% static 'js/merchant_search.js' %}"></script>
-    </body>
 {% endblock %}
 
 {% block scripts %}
 <style>
+      @import url("https://fonts.googleapis.com/css?family=Arbutus+Slab|Open+Sans&display=swap");
+
 * {
     box-sizing: border-box;
 }
 h1 {
     margin-bottom: 30px;
 }
+
 .container {
     margin: 0 auto;
     max-width: 1000px;
@@ -44,20 +43,14 @@ h1 {
     list-style-type: none;
     background-color: #eaeaea;
     border-radius: 3px;
-    padding: 10px 20px;
+    padding-top: 10px;
+    padding: 10px 40px 35px 30px;
     text-align: left;
 }
 
-.character > h5 {
-    margin-bottom: 0px;
+.character h4, p {
+    font-family: Arbutus Slab, serif; font-weight:bold; color: #000;
 }
-
-.character > p {
-    margin: 0;
-    height: 50px;
-    margin-top: -18px;
-}
-
 
 #searchBar {
     width: 100%;
@@ -120,5 +113,6 @@ h1 {
 }
 */
 </style>
+<script src="{% static 'js/merchant_search.js' %}"></script>
 {% endblock %}
 
