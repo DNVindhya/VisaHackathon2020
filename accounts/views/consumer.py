@@ -34,4 +34,4 @@ class ConsumerSignUpView(CreateView):
     def form_valid(self, form):
         user = form.save()
         login(self.request, user)
-        return redirect('consumers_dashboard')
+        return redirect('/customer/')
