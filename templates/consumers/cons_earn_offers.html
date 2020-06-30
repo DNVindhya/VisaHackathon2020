@@ -4,22 +4,25 @@
     {% block content %}
 
     <center>
-        <h2 style="text-decoration: none;"><strong>Merchant Name: </strong>{{merchant}}</h2>
-        <div style="padding-bottom: 20px;">
-          <h3 id="confirmation-msg" style="font-size: 15px;"></h3>
-            <label for="bill-amt" class="col-form-label">Enter bill amount at store:</label>
-            <input type="text" name="order_amount" id="bill-amt" style="height: 37px;">
-            <button id="tag-form-submit" type="submit" class="btn btn-dark">Make Payment</button>
-        </div>
+        <h2 style="text-decoration: none;"><strong>Merchant Name: </strong>{{merchant.user.first_name}}</h2>
+        <form id="pay_and_earn" action="/customer/pay_and_earn/" method="POST">{% csrf_token %}
+          <div style="padding-bottom: 20px;">
+            <h3 id="confirmation-msg" style="font-size: 15px;"></h3>
+              <label for="bill-amt" class="col-form-label">Enter bill amount at store:</label>
+              <input type="text" name="order_amount" id="bill-amt" style="height: 37px;">
+              <input type="hidden" name="merchantId" id="merchantId" value="{{merchant.user_id}}"/>
+              <button id="tag-form-submit" type="submit" class="btn btn-dark">Make Payment</button>
+          </div>
+        </form>
         <hr style="padding-bottom: 20px;"/>
         <h2 style="text-decoration: none;">Use Karma Points Balance: {{user.current_karma_points}}</h2>
-        <a id="maps-link"><h2 id="location-string" style="text-decoration: none;">Merchant Location: {{merchant_address}}</h2></a>
+        <a id="maps-link"><h2 id="location-string" style="text-decoration: none;">Merchant Location: {{merchant.address}}</h2></a>
         
     </center>
     <div class="container" style="margin-top: 30px;" id="offers-list">
         {% for offer in offers %}
         
-        <a data-toggle="modal" data-target="#exampleModal" data-offerid="{{offer.id}}" data-whatever="{{merchant}}">
+        <a data-toggle="modal" data-target="#exampleModal" data-offerid="{{offer.id}}" data-whatever="{{merchant.user.first_name}}">
             <div class="card">
               <div class="child">
                 <h2>ID: {{offer.id}}</h2>
