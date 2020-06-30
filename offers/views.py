@@ -70,16 +70,20 @@ def get_offers(request):
 	user=request.user.user_merchant
 	print("Print details of the merchant ------------")
 	print(user)
+	print(request.user.username)
+	print(request.user.first_name)
 	offers=Offers.objects.filter(merchant=user)
-	print(offers)
-	context = {'offers':offers}
+	context = {'offers':offers,
+		'store_name': request.user.first_name,
+		'address': request.user.user_merchant.address,
+		'city': request.user.user_merchant.city,
+		'state': request.user.user_merchant.state,
+		'zip': request.user.user_merchant.zip_code
+		}
 	return context
 	# return render(request, 'merchants/merch_dashboard.html', context)
 
 def delete_offer(request,pk):
 	offer=Offers.objects.filter(id=pk)
-	if request.method =="POST":
-		offer.delete()
-		return redirect('/merchdashboard')
-	context={'offer':offer, 'offerid':pk}
-	return render(request,'offers/delete_offer.html',context)
+	offer.delete()
+	return redirect('/merchdashboard')

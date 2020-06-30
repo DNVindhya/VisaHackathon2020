@@ -20,7 +20,7 @@ from django.http import HttpResponse
 from django.shortcuts import render
 
 from offers.views import get_offers
-from karmapoints.views import get_orders
+from karmapoints.views import get_orders, get_orders_json
 
 from accounts.views import platform, merchant, consumer
 from django.contrib.auth.decorators import login_required
@@ -85,6 +85,12 @@ def merchorders(request):
 
 @login_required
 @merchant_required
+def merchoffers(request):
+    all_offers = get_offers(request)
+    return render(request, 'merchants/merch_offers.html', all_offers)
+
+@login_required
+@merchant_required
 def merchreport(request):
     return render(request, 'merchants/merch_report.html')
 
@@ -111,6 +117,7 @@ urlpatterns = [
     path('offers/',include('offers.urls')),
     path('customer/',include('karmapoints.urls')),
     path('merchdashboard/', merchdashboard, name='merchants_dashboard'),
+    path('merchoffers/', merchoffers),
     path('merchorders/', merchorders),
     path('merchreport/', merchreport),
     #path('merchaccount/', merchaccount, name='merchants_account'),
@@ -121,5 +128,6 @@ urlpatterns = [
     path('consorders/', consorders),
     path('consofferprofile/', consofferprofile),
     path('consearnpoints/', consearnpoints),
+	path('getorders/', get_orders_json),
     path('payment/',include('payment.urls')),
 ]
