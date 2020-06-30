@@ -61,7 +61,9 @@ def edit(request):
             profile_form.save()
             address_form.save()
             card_form.save()
-       
+            request.user.user_merchant.update_location()
+            request.user.user_merchant.save()
+
     else:
         user_form = MerchantUserEditForm(instance=request.user)
         profile_form = MerchantDetailsEditForm(
