@@ -10,7 +10,7 @@ def home(request):
         if request.user.is_merchant:
             return redirect('merchants/')
         elif request.user.is_consumer:
-            return redirect('consumers/')
+            return redirect('/customer/')
         else:
             return redirect('admin:index')
     return render(request, 'accounts/home.html')

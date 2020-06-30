@@ -26,12 +26,12 @@
   <div class="d-flex flex-column flex-md-row align-items-center px-md-4 border-bottom shadow-sm navbar" style="font-size: 75%;">
           <h4 class="my-0 mr-md-auto font-weight-bold text-light app-title"><a class="navbar-brand logo-image" href="/index"><img class="navbar-logo-image" src="{% static 'images/white-icon.png' %}" alt="alternative"></a> Local Support</h4>
           <nav class="my-2 my-md-0 mr-md-3">
-              <a class="p-2 text-light nav-link" href="/consearnpoints">Home</a>
+              <a class="p-2 text-light nav-link" href="/customer/">Home</a>
             </nav>
           <nav class="my-2 my-md-0 mr-md-3">
             <a class="p-2 text-light nav-link" href="/consaccount">Account</a>
           </nav>
-          <a class="btn btn-outline-light nav-link" href="#">Log Out</a>
+          <a class="btn btn-outline-light nav-link" href="{% url 'logout' %}">Log Out</a>
         </div>
     <!--nav class="navbar fixed-top flex-md-nowrap p-0 shadow">
         <a class="navbar-brand logo-image" href="/index"><img class="navbar-logo-image" src="{% static 'images/white-icon.png' %}" alt="alternative"></a>
@@ -53,13 +53,13 @@
           <div class="sidebar-sticky">
             <ul class="nav flex-column" style="height: 1000px; font-size: 75%; margin-top: 15px;">
               <li class="nav-item">
-                <a class="nav-link active" href="/consearnpoints">
+                <a class="nav-link active" href="/customer/view_merchants/">
                   <span><img class="left-navbar-icon" src="https://img.icons8.com/doodle/48/000000/medal.png"/></span>
                   Earn Points <span class="sr-only">(current)</span>
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="/consavail">
+                <a class="nav-link" href="/customer/">
                   <span><img class="left-navbar-icon" src="https://img.icons8.com/ultraviolet/40/000000/discount.png"/></span>
                   Avail Offers
                 </a>

@@ -21,8 +21,9 @@ class Consumer(models.Model):
 	    return self.first_name
 
 class Orders(models.Model):
-	consumer = models.ForeignKey(Consumer, null = True, on_delete= models.CASCADE)
-	merchant = models.ForeignKey(Merchant, null = True, on_delete= models.CASCADE)
+	consumer = models.ForeignKey(Consumer, null = True, on_delete= models.SET_NULL)
+	merchant = models.ForeignKey(Merchant, null = True, on_delete= models.SET_NULL)
+	offer = models.ForeignKey(Offers, null=True, on_delete=models.SET_NULL)
 	order_amount = models.IntegerField(null = True)
 	order_date = models.DateTimeField(auto_now_add= True, null = True)
 	discount_amount = models.IntegerField(null = True)
