@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.shortcuts import render
-from .models import *
+from .models import Orders
 from offers.models import *
 from django.http import JsonResponse
 import json
@@ -23,6 +23,14 @@ def view_karma_points(request):
 	data["current_karma_points"]=current_karma_points
 	data["transactions"]=order_json
 	return JsonResponse(data,safe=False);
+
+@login_required
+@consumer_required
+def view_orders(request):
+	user=request.user.user_consumer
+	orders=Orders.objects.filter(consumer=user).order_by('-order_date')
+	return render(request,'consumers/cons_orders.html',context)
+
 
 def get_orders(request):
 	user=request.user.merchant
