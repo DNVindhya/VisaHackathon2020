@@ -4,9 +4,11 @@
     {% block content %}
      <script>
         var offer_id="{{offer.id}}"
-        var merchant_id="{{merchant.id}}"
+        var merchant_id="{{merchant.user_id}}"
         var consumer_id="{{user.id}}"
         var card_id="{{card_details.id}}" 
+        var order_amount = "{{order_amount}}"
+        var final_amount= "{{final_amount}}"
         console.log(offer_id)
         console.log(merchant_id)
         console.log(consumer_id)
@@ -454,12 +456,14 @@ span.month.focused.active
     $('#proceed_to_payment').on('click', function(e) {
       $.ajax({
           type: "POST",
-          url: "/customer/process_payment/",
+          url: "/payment/process_payment/",
           data: {
                   offer_id:offer_id,
                   merchant_id:merchant_id,
                   user_id:consumer_id,
                   card_details_id:card_id,
+                  order_amount:order_amount,
+                  final_amount:final_amount,
                   csrfmiddlewaretoken: '{{ csrf_token }}'
                 },
           success: function(response) {

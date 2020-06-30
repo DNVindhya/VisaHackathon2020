@@ -121,4 +121,5 @@ urlpatterns = [
     path('consorders/', consorders),
     path('consofferprofile/', consofferprofile),
     path('consearnpoints/', consearnpoints),
+    path('payment/',include('payment.urls')),
 ]
