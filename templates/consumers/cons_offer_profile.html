@@ -1,6 +1,8 @@
 {% extends "consumers/cons_base.html" %}
 {% load static %}
-    
+    {% block html_head %}
+    {% endblock %}    
+
     {% block content %}
     <center>
     <h2 style="font-family: Arbutus Slab, serif; font-size: 22px; margin-top: 18px; color: #000; line-height: 1.25; text-decoration: underline;"><strong>Checkout Screen</strong></h2>
@@ -30,9 +32,9 @@
                                             <div class="col-2 product-image"><img src="https://img.icons8.com/fluent/48/000000/shopping-cart.png"/></div>
                                             <h4 style="font-weight: normal; margin-top: 12px; margin-left: 5px;">{{merchant.user.first_name}}</h4>
                                         </div>
-                                        <div><h3>Redeeming {{offer.offer_name}}<br><span class="additional">Details: {{offer.details}}</span></h3></div>
-                                        <div><span style="text-decoration: underline;">Karma Points Used:</span> {{offer.karma_points_required}}</div>
-                                        <div><span style="text-decoration: underline;">Percentage Off:</span> {{offer.percentage_off}} %</div>
+                                        <div id="offer_desc"><h3>Redeeming {{offer.offer_name}}<br><span class="additional">Details: {{offer.details}}</span></h3></div>
+                                        <div><span style="text-decoration: underline;">Karma Points Used:</span> {{karma_used}}</div>
+                                        <div><span style="text-decoration: underline;">Percentage Off:</span> {{percentage_off}} %</div>
                                         <div><span style="text-decoration: underline;">Karma Points Earned:</span> {{karma_earned}}</div>
                                     </div>
                                     <div class="col-12 panel-footer basket-footer">
@@ -546,5 +548,10 @@ span.month.focused.active
     console.log(card_id)
     console.log(new_card_acc)
     document.getElementById("card_acc_num").innerHTML = new_card_acc;
+</script>
+<script>
+    if('{{offer}}' == "False") {
+        document.getElementById("offer_desc").innerHTML = ""
+    }
 </script>
     {% endblock %}

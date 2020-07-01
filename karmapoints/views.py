@@ -181,27 +181,41 @@ def avail_karma_points(request):
 def confirm_order(request):
 	user=request.user
 	
-	#print("confirm_order_view")
-	offer_id=request.POST.get('offerId')
-	order_amount=request.POST.get('order_amount')
-	if offer_id == None and order_amount == None:
-		offer_id = request.session['offerId']
-		order_amount = request.session['order_amount']
+	if request.POST.get('offerId'):
+		#print("confirm_order_view")
+		offer_id=request.POST.get('offerId')
+		order_amount=request.POST.get('order_amount')
+		if offer_id == None and order_amount == None:
+			offer_id = request.session['offerId']
+			order_amount = request.session['order_amount']
 
-		if offer_id is not None and order_amount is not None:
-			del request.session['order_amount']
-			del request.session['offerId']
-	order_amount = float(order_amount)
-	# print(offer_id)
-	offer1 = list(Offers.objects.filter(id=offer_id).values())[0]
-	offer = Offers.objects.get(id = offer_id)
-	print(offer1)
-	merchant = Merchant.objects.get(user_id = offer1['merchant_id'])
+			if offer_id is not None and order_amount is not None:
+				del request.session['order_amount']
+				del request.session['offerId']
+		order_amount = float(order_amount)
+		# print(offer_id)
+		offer1 = list(Offers.objects.filter(id=offer_id).values())[0]
+		offer = Offers.objects.get(id = offer_id)
+		print(offer1)
+		merchant = Merchant.objects.get(user_id = offer1['merchant_id'])
+		final_amount=order_amount-(order_amount*offer1['percentage_off']/100)
+		discount_off = (order_amount*offer1['percentage_off']/100)
+		percentage_off = offer.percentage_off
+		karma_used = offer.karma_points_required
+
+	else:
+		order_amount=float(request.POST.get('order_amount'))
+		merchant_id=request.POST.get('merchantId')
+		merchant = Merchant.objects.get(user_id = merchant_id)
+		offer = "False"
+		final_amount = order_amount
+		percentage_off = 0
+		karma_used = 0
+		discount_off = 0
+
 	#print(offer['percentage_off'])
 	#print(type(offer['percentage_off']))
 	#print(type(order_amount))
-	final_amount=order_amount-(order_amount*offer1['percentage_off']/100)
-	discount_off = (order_amount*offer1['percentage_off']/100)
 	karma_earned = final_amount * 0.35
 	try:
 		card_details=Card_Details.objects.get(user=user)
@@ -214,7 +228,7 @@ def confirm_order(request):
 		request.session['offerId'] = offer_id
 		request.session['order_amount'] = order_amount
 		return redirect( reverse('consumers_account'), { 'offerId': offer_id, 'order_amount':order_amount })
-	context={'order_amount':order_amount,'offer':offer,'final_amount':final_amount,'merchant':merchant,'user':user,'card_details':card_details, 'discount_off':discount_off, 'karma_earned': karma_earned}
+	context={'order_amount':order_amount,'offer':offer,'final_amount':final_amount,'merchant':merchant,'user':user,'card_details':card_details, 'discount_off':discount_off, 'karma_earned': karma_earned, 'percentage_off': percentage_off, 'karma_used': karma_used}
 	return render(request,'consumers/cons_offer_profile.html',context)
 
 @login_required
@@ -238,17 +252,6 @@ def process_payment(request):
 def payment_success(request):
 	context={}
 	return render(request,'consumers/cons_payment_success.html',context)
-
-@login_required
-@consumer_required
-def pay_and_earn(request):
-	order_amount=float(request.POST.get('order_amount'))
-	merchant_id=request.POST.get('merchantId')
-	print(order_amount)
-	print(merchant_id)
-	context={}
-	return render(request,'consumers/cons_pay_and_earn.html',context)
-
 
 @login_required
 @consumer_required
