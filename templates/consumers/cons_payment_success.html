@@ -3,8 +3,24 @@
     
     {% block content %}
     <center>
-        Payment success
+    <h2 style="font-family: Arbutus Slab, serif; font-size: 22px; margin-top: 18px; color: #000; line-height: 1.25; text-decoration: underline;"><strong>Payment Successful!</strong></h2>
+    <p style="font-weight:normal; width: 70%; font-family: Arbutus Slab, serif; color: #292929;">Thank you for supporting Small Businesses, you have been awarded with <span id="karma_earned"> karma points as a reward.</p>
+    <hr>
+    <div style="width: 40%; margin-top: 40px;">
+        <ul style="list-style-type: none; font-family: Open Sans, serif; color: #292929; text-align: left;">
+            <li>Date: </li>
+            <li>Payment Amount: </li>
+            <li>Merchant Name: </li>
+            <li>Karma Points Earned: </li>
+            <li>Karma Points Used: </li>
+            <li>Discount Amount: </li>
+        </ul>
+    </div>
+    <a class="btn btn-dark" href="/customer/view_orders" role="button" style="text-decoration: none; margin-top: 20px;">View all past orders</a>
     </center>
     {% endblock %}
     {% block scripts %}
+    <style>
+@import url("https://fonts.googleapis.com/css?family=Arbutus+Slab|Open+Sans&display=swap");
+    </style>
     {% endblock %}
