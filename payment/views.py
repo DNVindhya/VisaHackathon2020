@@ -20,11 +20,11 @@ def process_payment(request):
 
 	# Authentication for VISA Direct APIs, replace with your credentials
 	config = Configuration()
-	config.username = '7SG6JCVBQX19D3ZTE9DX21Wd2mK1qDfxz6f65yFcCraHniopc'
-	config.password = 'k3BVYK02PpAm27D82xwPf6dUkpmA2T282YYf8c'
-	config.cert_file = '/Users/dnv/Downloads/visa_direct/myApp/custom_store/cert.pem'
-	config.key_file = '/Users/dnv/Downloads/visa_direct/myApp/custom_store/key_4212dd3b-5b2a-4e00-b50d-4f227d4412af.pem'
-	config.ssl_ca_cert = '/Users/dnv/Downloads/visa_direct/myApp/DigiCertGlobalRootCA.pem'	
+	config.username = 'xxxx'
+	config.password = 'xxxx'
+	config.cert_file = 'cert.pem'
+	config.key_file = 'private_key.pem'
+	config.ssl_ca_cert = 'DigiCertGlobalRootCA.pem'	
 
 	# Data available to Originator in Funds Transfer
 	acquirerCountryCode = "840"
@@ -163,13 +163,13 @@ def process_payment(request):
 	message = {}
 	if pull_success and push_success:
 		print("Success")
-		message['status'] = "PAYMENT SUCCESS"
+		message['status'] = "SUCCESS"
 		message['action_code'] = txn.push_status
 		message['txn_id'] = txn.pull_transaction_identifier
 		return JsonResponse(message,safe=False)
 	else:
 		print("Failure")
-		message['status'] = "PAYMENT FAILURE"
+		message['status'] = "FAILURE"
 		if pull_response.action_code != "00":
 			message['action_code'] = txn.pull_status
 		else:
