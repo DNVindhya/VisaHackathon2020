@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     
-    <title>Customer Portal Dashboard | Local Support at Visa</title>
+    <title>Customer Portal Dashboard | Covid Support at Visa</title>
     <!-- META TAG PLACEHOLDER -->	
     {% block html_head %}{% endblock %}
         
@@ -22,14 +22,17 @@
   <link rel="shortcut icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon">
   <link rel="icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon">
   <script type="text/JavaScript">
-var user = '{{request.user.user_consumer.current_karma_points}}'
-console.log(user)
+// var user = '{{request.user.user_consumer.current_karma_points}}'
+// if (user == 'None') {
+//   user = 0
+// }
+// console.log(typeof user)
   </script>
 </head>
 
 <body>
   <div class="d-flex flex-column flex-md-row align-items-center px-md-4 border-bottom shadow-sm navbar" style="font-size: 75%;">
-          <h4 class="my-0 mr-md-auto font-weight-bold text-light app-title"><a class="navbar-brand logo-image" href="/customer/"><img class="navbar-logo-image" src="{% static 'images/white-icon.png' %}" alt="alternative"></a> Local Support</h4>
+          <h4 class="my-0 mr-md-auto font-weight-bold text-light app-title"><a class="navbar-brand logo-image" href="/customer/"><img class="navbar-logo-image" src="{% static 'images/white-icon.png' %}" alt="alternative"></a> Covid Support</h4>
           <nav class="my-2 my-md-0 mr-md-3">
               <a class="p-2 text-light nav-link" href="/customer/">Home</a>
             </nav>
@@ -56,32 +59,32 @@ console.log(user)
       <div class="row">
         <nav class="col-md-2 d-none d-md-block bg-light sidebar">
           <div class="sidebar-sticky">
-            <ul class="nav flex-column" style="min-height: 700px; font-size: 75%; margin-top: 15px;">
+            <ul class="nav flex-column" style="min-height: 750px; font-size: 75%; margin-top: 15px;">
               <li class="nav-item">
                 <a class="nav-link active" href="/customer/view_merchants/">
                   <span><img class="left-navbar-icon" src="https://img.icons8.com/doodle/48/000000/medal.png"/></span>
-                  Earn Points <span class="sr-only">(current)</span>
+                  Search Stores<span class="sr-only">(current)</span>
                 </a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="/customer/">
                   <span><img class="left-navbar-icon" src="https://img.icons8.com/ultraviolet/40/000000/discount.png"/></span>
-                  Avail Offers
+                  Redeem Offers
                 </a>
               </li>
-              <li class="nav-item">
+              <!-- <li class="nav-item">
                 <a class="nav-link" href="/customer/wallet/">
                   <span><img class="left-navbar-icon" src="https://img.icons8.com/cotton/64/000000/card-wallet.png"/></span>
                   My Wallet
                 </a>
-              </li>
+              </li> -->
               <li class="nav-item">
                 <a class="nav-link" href="/customer/view_orders/">
-                  <span><img class="left-navbar-icon" src="https://img.icons8.com/dusk/64/000000/purchase-order.png"/></span>
-                  Orders
+                  <span><img class="left-navbar-icon" src="https://img.icons8.com/cotton/64/000000/card-wallet.png"/></span>
+                  My Wallet
                 </a>
               </li>
-              <li class="nav-item" style="margin-top: 40px; padding-left: 20px;">
+              <li class="nav-item" id="karma_bal" style="margin-top: 40px; padding-left: 20px;">
                 Karma Points Balance: {{request.user.user_consumer.current_karma_points}}
               </li>
             </ul>

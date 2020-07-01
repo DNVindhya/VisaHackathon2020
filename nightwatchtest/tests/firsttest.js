@@ -3,6 +3,6 @@ module.exports = {
         browser
             .url("http://localhost:8000/")
             .waitForElementVisible('.text-container')
-            .assert.containsText(".text-container", "Local Support by Visa");
+            .assert.containsText(".text-container", "Covid Support by Visa");
     }
 }

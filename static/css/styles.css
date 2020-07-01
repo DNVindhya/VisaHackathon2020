@@ -2144,3 +2144,15 @@ a:hover.back-to-top {
 	/* end of extra pages */
 }
 /* end of min-width width 1200px */
+
+#consTitle {
+	font-family: Arbutus Slab, serif; 
+	text-decoration: none; 
+	font-size: 35px; 
+	margin-top: 18px; 
+	color: #000; 
+	line-height: 1.25; 
+	padding-bottom: 5px; 
+	width: 400px;
+	border: 2px solid black;
+  }

@@ -4,8 +4,10 @@
     {% block content %}
     <center>
     <h2 style="font-family: Arbutus Slab, serif; font-size: 22px; margin-top: 18px; color: #000; line-height: 1.25; text-decoration: underline;"><strong>Checkout Screen</strong></h2>
+    <p style="font-weight:normal; width: 70%; font-family: Arbutus Slab, serif; color: #292929;">Checkout securely - powered by Visa Direct</p>
     </center>
-    <div class="container-fluid background">
+    <hr>
+    <div class="container-fluid background" style="padding-bottom: 40px;">
         <div class="row padding-top-20">
             <div class="col-12 col-sm-12 col-md-10 col-lg-10 col-xl-8 offset-md-1 offset-lg-1 offset-xl-2">
                 <div class="row">
@@ -26,11 +28,12 @@
                                     <div class="col-12 panel-body basket-body">
                                         <div class="row product">
                                             <div class="col-2 product-image"><img src="https://img.icons8.com/fluent/48/000000/shopping-cart.png"/></div>
-                                            <h4>{{merchant.user}}</h4>
+                                            <h4 style="font-weight: normal; margin-top: 12px; margin-left: 5px;">{{merchant.user.first_name}}</h4>
                                         </div>
-                                        <div><h3>Redeeming {{offer.offer_name}}<br><span class="additional">{{offer.details}}</span></h3></div>
-                                        <div><span class="sub">Karma Points Used:</span> {{offer.karma_points_required}}</div>
-                                        <div><span class="sub"></span>{{offer.percentage_off}} %</div>
+                                        <div><h3>Redeeming {{offer.offer_name}}<br><span class="additional">Details: {{offer.details}}</span></h3></div>
+                                        <div><span style="text-decoration: underline;">Karma Points Used:</span> {{offer.karma_points_required}}</div>
+                                        <div><span style="text-decoration: underline;">Percentage Off:</span> {{offer.percentage_off}} %</div>
+                                        <div><span style="text-decoration: underline;">Karma Points Earned:</span> {{karma_earned}}</div>
                                     </div>
                                     <div class="col-12 panel-footer basket-footer">
                                         <hr>
@@ -53,7 +56,7 @@
                                     <div class="col-12 panel-header creditcard-header">
                                         <div class="row">
                                             <div class="col-12 creditcard-title">
-                                                <span class="description">select card</span><br><span class="emphasized">Powered by VisaDirect</span>
+                                                <span class="description">select card</span><br><span class="emphasized">Powered by Visa Direct</span>
                                             </div>
                                         </div>
                                     </div>

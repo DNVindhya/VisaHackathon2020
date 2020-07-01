@@ -3,8 +3,12 @@
     
     {% block content %}
     <center>
-        <h2 class="border-bottom" style="font-size: 35px; margin-top: 18px; color: #000; line-height: 1.25; padding-bottom: 20px;"><strong>Orders</strong></h2>
-        <div id="offers-list">
+      <center>
+        <h2 id="consTitle"><strong>My Wallet</strong></h2>
+        <p style="font-weight:normal; width: 70%; font-family: Arbutus Slab, serif; color: #292929;">Here is a list of all your previous transactions.</p>
+      </center>
+      <hr>
+      <div id="offers-list">
             <table class="table">
               <thead class="thead-light">
                 <tr>
@@ -35,4 +39,19 @@
     </center>
     {% endblock %}
     {% block scripts %}
+<style>
+  @import url("https://fonts.googleapis.com/css?family=Arbutus+Slab|Open+Sans&display=swap");
+
+#consTitle {
+  font-family: Arbutus Slab, serif; 
+  text-decoration: none; 
+  font-size: 35px; 
+  margin-top: 18px; 
+  color: #000; 
+  line-height: 1.25; 
+  padding-bottom: 5px; 
+  width: 400px;
+  border: 2px solid black;
+}
+</style>
     {% endblock %}

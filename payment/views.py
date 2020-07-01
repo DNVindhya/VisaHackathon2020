@@ -137,7 +137,7 @@ def process_payment(request):
 		cur_order.order_amount = round(float(ord_amount))
 		cur_order.discount_amount = round(float(amount))
 		cur_order.karma_points_used = offerDetails.karma_points_required
-		cur_order.karma_points_earned = round((0.05) * float(amount))
+		cur_order.karma_points_earned = round((0.35) * float(amount))
 		print(cur_order.karma_points_earned)
 		print(cur_order)
 		consumerDetails.current_karma_points = consumerDetails.current_karma_points - cur_order.karma_points_used + cur_order.karma_points_earned

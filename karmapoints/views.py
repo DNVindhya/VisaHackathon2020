@@ -202,6 +202,7 @@ def confirm_order(request):
 	#print(type(order_amount))
 	final_amount=order_amount-(order_amount*offer1['percentage_off']/100)
 	discount_off = (order_amount*offer1['percentage_off']/100)
+	karma_earned = final_amount * 0.35
 	try:
 		card_details=Card_Details.objects.get(user=user)
 	except:
@@ -213,7 +214,7 @@ def confirm_order(request):
 		request.session['offerId'] = offer_id
 		request.session['order_amount'] = order_amount
 		return redirect( reverse('consumers_account'), { 'offerId': offer_id, 'order_amount':order_amount })
-	context={'order_amount':order_amount,'offer':offer,'final_amount':final_amount,'merchant':merchant,'user':user,'card_details':card_details, 'discount_off':discount_off}
+	context={'order_amount':order_amount,'offer':offer,'final_amount':final_amount,'merchant':merchant,'user':user,'card_details':card_details, 'discount_off':discount_off, 'karma_earned': karma_earned}
 	return render(request,'consumers/cons_offer_profile.html',context)
 
 @login_required
