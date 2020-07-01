@@ -15,16 +15,18 @@ import random
 import string
 import re
 import json
+import os
 
 def process_payment(request):
 
 	# Authentication for VISA Direct APIs, replace with your credentials
 	config = Configuration()
-	config.username = 'xxxx'
-	config.password = 'xxxx'
-	config.cert_file = 'cert.pem'
-	config.key_file = 'private_key.pem'
-	config.ssl_ca_cert = 'DigiCertGlobalRootCA.pem'	
+	module_dir = os.path.dirname(_file_) # get current directory
+	config.username = '7SG6JCVBQX19D3ZTE9DX21Wd2mK1qDfxz6f65yFcCraHniopc'
+	config.password = 'k3BVYK02PpAm27D82xwPf6dUkpmA2T282YYf8c'
+	config.cert_file = os.path.join(module_dir,'cert.pem')
+	config.key_file = os.path.join(module_dir,'key_4212dd3b-5b2a-4e00-b50d-4f227d4412af.pem')
+	config.ssl_ca_cert = os.path.join(module_dir,'DigiCertGlobalRootCA.pem')
 
 	# Data available to Originator in Funds Transfer
 	acquirerCountryCode = "840"
