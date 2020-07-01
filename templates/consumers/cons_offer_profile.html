@@ -490,7 +490,11 @@ span.month.focused.active
                 },
           success: function(response) {
               console.log(response)
-              window.location.href="/customer/payment_success"
+              console.log(JSON.stringify(response))
+              if(response.status == "PAYMENT SUCCESS")
+                console.log("we are here")
+              else
+                console.log("It failed")
           },
           error: function() {
               alert('Error');

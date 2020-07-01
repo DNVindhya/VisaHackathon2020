@@ -7,6 +7,7 @@ from accounts.models import Card_Details,User,Consumer,Merchant
 from offers.models import Offers
 from karmapoints.models import Orders
 from .models import *
+from .utils import action_code_to_txn_status
 
 import datetime
 import pytz
@@ -15,7 +16,6 @@ import string
 import re
 import json
 
-# Create your views here.
 def process_payment(request):
 
 	# Authentication for VISA Direct APIs, replace with your credentials
@@ -85,14 +85,9 @@ def process_payment(request):
 	pullFundsRequestData['addressVerificationData'] = addressVerificationData
 	pullFundsRequestData['settlementServiceIndicator'] = settlementServiceIndicator
 
-	print("PullFUnds Request JSON")
-	print(pullFundsRequestData)
-
 	api_instance = FundsTransferApi()
 
-	api_response = api_instance.postpullfunds(pullFundsRequestData)
-	print("POST PullFunds http response :")
-	print(api_response)
+	pull_response = api_instance.postpullfunds(pullFundsRequestData)
 
 
 	# Creating Request payload for PushFundsTransaction POST
@@ -102,7 +97,7 @@ def process_payment(request):
 	push_systemsTraceAuditNumber = ''.join(random.choice(string.digits) for _ in range(6))
 	push_retrievalReferenceNumber = str(pull_timestamp[3]) + str(dayOfYear) + str(push_timestamp[-8:-6]) + str(push_systemsTraceAuditNumber)
 
-	pullTransactionIdentifier = api_response.transaction_identifier
+	pullTransactionIdentifier = pull_response.transaction_identifier
 	merchantCard = Card_Details.objects.get(user=merchantId)
 	merchantCardPAN = merchantCard.account_number
 
@@ -119,41 +114,64 @@ def process_payment(request):
 	pushFundsRequestData['transactionIdentifier'] = str(pullTransactionIdentifier)
 	pushFundsRequestData['cardAcceptor'] = cardAcceptor
 
-	print("PushFUnds Request JSON")
-	print(pushFundsRequestData)	
-	print(json.dumps(pushFundsRequestData))
+	txn = Transactions()
+	txn.pull_transaction_identifier   = pull_response.transaction_identifier
+	txn.pull_action_code              = pull_response.action_code
+	txn.pull_approval_code            = pull_response.approval_code
+	txn.pull_response_code            = pull_response.response_code
+	txn.pull_transmission_date_time   = pull_response.transmission_date_time
+	txn.amount                        = amount
+	txn.sender_card_id                = senderCardPAN
 
-	api_response = api_instance.postpushfunds(pushFundsRequestData)
-	print("POST PushFunds http response :")
-	print(api_response)
 
-	cur_order = Orders()
- 
-	if (api_response.action_code == "00"):
+	pull_success = False
+	push_success = False
+	txn.pull_status = action_code_to_txn_status(txn.pull_action_code)
+	print(txn.pull_status)
+
+	if pull_response.action_code == "00":
+		pull_success = True
+		# Call Push Funds only when pull funds txn is approved 
+		push_response = api_instance.postpushfunds(pushFundsRequestData)
+		
+		txn.push_transaction_identifier   = push_response.transaction_identifier
+		txn.push_action_code              = push_response.action_code
+		txn.push_approval_code            = push_response.approval_code
+		txn.push_response_code            = push_response.response_code
+		txn.push_transmission_date_time   = push_response.transmission_date_time
+		txn.sender_card_id                = merchantCardPAN
+
+		if push_response.action_code == "00":
+			cur_order = Orders()
+			cur_order.consumer = consumerDetails
+			cur_order.merchant = merchantDetails
+			cur_order.offer    = offerDetails
+			cur_order.order_amount = float(ord_amount)
+			cur_order.discount_amount = float(amount)
+			cur_order.karma_points_used = offerDetails.karma_points_required
+			cur_order.karma_points_earned = round((0.05) * float(amount))
+			consumerDetails.current_karma_points = consumerDetails.current_karma_points - cur_order.karma_points_used + cur_order.karma_points_earned
+			cur_order.save()
+			consumerDetails.save()
+			saved_order = Orders.objects.get(id=cur_order.id)
+			txn.order = saved_order
+			push_success = True
+
+		txn.push_status = action_code_to_txn_status(txn.push_action_code)
+		txn.save()
+
+	message = {}
+	if pull_success and push_success:
 		print("Success")
-		cur_order.consumer = consumerDetails
-		cur_order.merchant = merchantDetails
-		cur_order.offer    = offerDetails
-		cur_order.order_amount = round(float(ord_amount))
-		cur_order.discount_amount = round(float(amount))
-		cur_order.karma_points_used = offerDetails.karma_points_required
-		cur_order.karma_points_earned = round((0.05) * float(amount))
-		print(cur_order.karma_points_earned)
-		print(cur_order)
-		consumerDetails.current_karma_points = consumerDetails.current_karma_points - cur_order.karma_points_used + cur_order.karma_points_earned
-		cur_order.save()
-		consumerDetails.save()
-		return JsonResponse('Payment Complete',safe=False);
+		message['status'] = "PAYMENT SUCCESS"
+		message['action_code'] = txn.push_status
+		message['txn_id'] = txn.pull_transaction_identifier
+		return JsonResponse(message,safe=False)
 	else:
 		print("Failure")
-		return JsonResponse('Payment Failure',safe=False);
-
-	# return JsonResponse('Payment Complete',safe=False)
-
-def payment_success(self, request):
-	context = {}
-	return render(request, 'payment/success.html', context)
-
-def payment_failure(self, request):
-	context = {}
-	return render(request, 'payment/failure.html', context)
+		message['status'] = "PAYMENT FAILURE"
+		if pull_response.action_code != "00":
+			message['action_code'] = txn.pull_status
+		else:
+			message['action_code'] = txn.push_status
+		return JsonResponse(message,safe=False)
