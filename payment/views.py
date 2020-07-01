@@ -21,7 +21,7 @@ def process_payment(request):
 
 	# Authentication for VISA Direct APIs, replace with your credentials
 	config = Configuration()
-	module_dir = os.path.dirname(_file_) # get current directory
+	module_dir = os.path.dirname(__file__) # get current directory
 	config.username = '7SG6JCVBQX19D3ZTE9DX21Wd2mK1qDfxz6f65yFcCraHniopc'
 	config.password = 'k3BVYK02PpAm27D82xwPf6dUkpmA2T282YYf8c'
 	config.cert_file = os.path.join(module_dir,'cert.pem')
