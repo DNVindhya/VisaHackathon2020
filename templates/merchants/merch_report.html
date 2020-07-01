@@ -13,35 +13,63 @@
 {% block scripts %}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script>
     <script>
-    var ctx = document.getElementById("myChart");
-    var myChart = new Chart(ctx, {
-        type: 'line',
-        data: {
-        labels: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
-        datasets: [{
-            data: [15339, 21345, 18483, 24003, 23489, 24092, 12034],
-            lineTension: 0,
-            backgroundColor: 'transparent',
-            borderColor: '#007bff',
-            borderWidth: 4,
-            pointBackgroundColor: '#007bff'
-        }]
-        },
-        options: {
-        scales: {
-            yAxes: [{
-            ticks: {
-                beginAtZero: false
+        document.getElementById("nav-item-report").classList.add('selected-nav-item');
+        var amountsArray = [0, 0, 0, 0, 0, 0, 0];
+        var datesArray = ["", "", "", "", "", "", ""];
+        $.ajax({
+            url: "http://127.0.0.1:8000/getorders",
+            type: "GET",
+            data :{},
+            success:function(result){
+                for(var i = 6; i >= 0; i--) {
+                    var todaysDateTime = new Date();
+                    var todaysDate = new Date(todaysDateTime.toDateString());
+                    var targetDate = todaysDate;
+                    targetDate.setDate(targetDate.getDate() - i);
+                    datesArray[6 - i] = (targetDate.toDateString().substring(4, 10));
+                    for(var j = 0; j < result.orders.length; j++) {
+                        var orderDateTime = new Date(result.orders[j].order_date);
+                        var orderDate = new Date(orderDateTime.toDateString());
+                        if(orderDate.getDate() == targetDate.getDate()) {
+                            amountsArray[6 - i] += result.orders[j].order_amount;
+                        }
+                    }
+                }
+                generateGraph();
+            },
+            error:function(error){
+                //error handal
             }
-            }]
-        },
-        legend: {
-            display: false,
+        });
+
+        function generateGraph() {
+            var ctx = document.getElementById("myChart");
+            var myChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                labels: datesArray,
+                datasets: [{
+                    data: amountsArray,
+                    lineTension: 0,
+                    backgroundColor: 'transparent',
+                    borderColor: '#007bff',
+                    borderWidth: 4,
+                    pointBackgroundColor: '#007bff'
+                }]
+                },
+                options: {
+                scales: {
+                    yAxes: [{
+                    ticks: {
+                        beginAtZero: false
+                    }
+                    }]
+                },
+                legend: {
+                    display: false,
+                }
+                }
+            });
         }
-        }
-    });
-    </script>
-    <script>
-      document.getElementById("nav-item-report").classList.add('selected-nav-item');
     </script>
 {% endblock %}
