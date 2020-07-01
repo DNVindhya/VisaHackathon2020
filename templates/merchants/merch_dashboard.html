@@ -58,28 +58,5 @@
     {% block scripts %}
     <script>
       document.getElementById("nav-item-dashboard").classList.add('selected-nav-item');
-      const loadCharacters = async () => {
-        try {
-          const res = await fetch('/merchdashboard');
-          console.log(res)
-          listmerchants = await res.json();
-          console.log(listmerchants);
-
-        } catch (err) {
-          console.error(err);
-        }
-      };
-      
-      $.ajax({
-        url: "http://127.0.0.1:8000/getorders",
-        type: "GET",
-        data :{},
-        success:function(result){
-            console.log(result)
-        },
-        error:function(error){
-            //error handal
-        }
-      });
     </script>
     {% endblock %}
