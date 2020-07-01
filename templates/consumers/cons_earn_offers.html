@@ -5,7 +5,7 @@
 
     <center>
         <h2 style="text-decoration: none;"><strong>Merchant Name: </strong>{{merchant.user.first_name}}</h2>
-        <form id="pay_and_earn" action="/customer/pay_and_earn/" method="POST">{% csrf_token %}
+        <form id="pay_and_earn" action="/customer/confirm_order/" method="POST">{% csrf_token %}
           <div style="padding-bottom: 20px;">
             <h3 id="confirmation-msg" style="font-size: 15px;"></h3>
               <label for="bill-amt" class="col-form-label">Enter bill amount at store:</label>
