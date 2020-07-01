@@ -2,19 +2,6 @@
 {% load static %}
     
     {% block content %}
-     <script>
-        var offer_id="{{offer.id}}"
-        var merchant_id="{{merchant.user_id}}"
-        var consumer_id="{{user.id}}"
-        var card_id="{{card_details.id}}" 
-        var order_amount = "{{order_amount}}"
-        var final_amount= "{{final_amount}}"
-        console.log(offer_id)
-        console.log(merchant_id)
-        console.log(consumer_id)
-        console.log(card_id)
-    </script>
-
     <center>
     <h2 style="font-family: Arbutus Slab, serif; font-size: 22px; margin-top: 18px; color: #000; line-height: 1.25; text-decoration: underline;"><strong>Checkout Screen</strong></h2>
     </center>
@@ -39,10 +26,11 @@
                                     <div class="col-12 panel-body basket-body">
                                         <div class="row product">
                                             <div class="col-2 product-image"><img src="https://img.icons8.com/fluent/48/000000/shopping-cart.png"/></div>
-                                            <div class="col-5">{{offer.offer_name}}<br><span class="additional">{{offer.details}}</span></div>
-                                            <div class="col-2 align-right"><span class="sub">Karma Points:</span> {{offer.karma_points_required}}</div>
-                                            <div class="col-3 align-right"><span class="sub"></span>{{offer.percentage_off}}</div>
+                                            <h4>{{merchant.user}}</h4>
                                         </div>
+                                        <div><h3>Redeeming {{offer.offer_name}}<br><span class="additional">{{offer.details}}</span></h3></div>
+                                        <div><span class="sub">Karma Points Used:</span> {{offer.karma_points_required}}</div>
+                                        <div><span class="sub"></span>{{offer.percentage_off}} %</div>
                                     </div>
                                     <div class="col-12 panel-footer basket-footer">
                                         <hr>
@@ -50,7 +38,7 @@
                                             <div class="col-8 align-right description"><div class="dive">Subtotal</div></div>
                                             <div class="col-4 align-right"><span class="emphasized">{{order_amount}}</span></div>
                                             <div class="col-8 align-right description"><div class="dive">Discount</div></div>
-                                            <div class="col-4 align-right"><span class="emphasized">{{taxes}}</span></div>
+                                            <div class="col-4 align-right"><span class="emphasized">{{discount_off}}</span></div>
                                         </div>
                                         <hr>
                                         <div class="row">
@@ -81,9 +69,10 @@
                                                       <div class="panel panel-default card-input">
                                                           <div class="panel-heading">Card 1</div>
                                                           <div class="panel-body">
-                                                              **** **** **** 0549
+                                                            <span id="card_acc_num">
+                                                            </span>
                                                               <br/>
-                                                              Valid thru 01/22
+                                                              Valid thru {{card_details.expiry_data}}
                                                           </div>
                                                       </div>
                                                     </label>
@@ -97,7 +86,7 @@
                                                           <div class="panel-body">
                                                               **** **** **** 2374
                                                               <br/>
-                                                              Valid thru 04/21
+                                                              Valid thru 2020-08
                                                           </div>
                                                       </div>
                                                       </label>
@@ -111,7 +100,7 @@
                                                           <div class="panel-body">
                                                               **** **** **** 1109
                                                               <br/>
-                                                              Valid thru 10/22
+                                                              Valid thru 2022-02
                                                           </div>
                                                       </div>
                                                     </label>
@@ -531,4 +520,28 @@ span.month.focused.active
     minViewMode: "months"        
 });
     </script>
+
+<script>
+    var offer_id="{{offer.id}}"
+    var merchant_id="{{merchant.user_id}}"
+    var consumer_id="{{user.id}}"
+    var card_id="{{card_details.id}}" 
+    var order_amount = "{{order_amount}}"
+    var final_amount= "{{final_amount}}"
+    var card_acc = '{{card_details.account_number}}'
+    var new_card_acc = "";
+    for(i = 0; i<card_acc.length - 4; i++) {
+        new_card_acc += "*"
+        if(((i + 1) % 4) == 0) {
+            new_card_acc += " "
+        }
+    }
+    new_card_acc += card_acc.substring(card_acc.length - 4)
+    console.log(offer_id)
+    console.log(merchant_id)
+    console.log(consumer_id)
+    console.log(card_id)
+    console.log(new_card_acc)
+    document.getElementById("card_acc_num").innerHTML = new_card_acc;
+</script>
     {% endblock %}

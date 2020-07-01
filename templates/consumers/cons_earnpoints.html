@@ -2,7 +2,7 @@
 {% load static %}
 {% block content %}
         <div class="container">
-            <h2 class="border-bottom" style="font-family: inherit; text-decoration: none; font-size: 35px; margin-top: 18px; color: #000; line-height: 1.25; padding-bottom: 20px;"><strong>View Merchants</strong></h2>
+            <h2 class="border-bottom" id="merchName" style="font-family: inherit; text-decoration: none; font-size: 35px; margin-top: 18px; color: #000; line-height: 1.25; padding-bottom: 20px;"><strong>View Merchants</strong></h2>
             
             <div id="searchWrapper">
                 <input
@@ -50,6 +50,10 @@ h1 {
 
 .character h4, p {
     font-family: Arbutus Slab, serif; font-weight:bold; color: #000;
+}
+
+#merchName {
+  border: 3px solid black;
 }
 
 #searchBar {

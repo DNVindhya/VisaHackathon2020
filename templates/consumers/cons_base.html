@@ -21,6 +21,10 @@
 	<!-- Favicon  -->
   <link rel="shortcut icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon">
   <link rel="icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon">
+  <script type="text/JavaScript">
+var user = '{{request.user.user_consumer.current_karma_points}}'
+console.log(user)
+  </script>
 </head>
 
 <body>
@@ -78,7 +82,7 @@
                 </a>
               </li>
               <li class="nav-item" style="margin-top: 40px; padding-left: 20px;">
-                Karma Points Balance:
+                Karma Points Balance: {{request.user.user_consumer.current_karma_points}}
               </li>
             </ul>
           </div>

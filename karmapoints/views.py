@@ -1,5 +1,4 @@
-from django.shortcuts import render
-from django.shortcuts import render
+from django.shortcuts import render, redirect, reverse
 from .models import Orders
 from offers.models import *
 from django.http import JsonResponse
@@ -181,9 +180,18 @@ def avail_karma_points(request):
 @consumer_required
 def confirm_order(request):
 	user=request.user
+	
 	#print("confirm_order_view")
 	offer_id=request.POST.get('offerId')
-	order_amount=float(request.POST.get('order_amount'))
+	order_amount=request.POST.get('order_amount')
+	if offer_id == None and order_amount == None:
+		offer_id = request.session['offerId']
+		order_amount = request.session['order_amount']
+
+		if offer_id is not None and order_amount is not None:
+			del request.session['order_amount']
+			del request.session['offerId']
+	order_amount = float(order_amount)
 	# print(offer_id)
 	offer1 = list(Offers.objects.filter(id=offer_id).values())[0]
 	offer = Offers.objects.get(id = offer_id)
@@ -193,12 +201,19 @@ def confirm_order(request):
 	#print(type(offer['percentage_off']))
 	#print(type(order_amount))
 	final_amount=order_amount-(order_amount*offer1['percentage_off']/100)
+	discount_off = (order_amount*offer1['percentage_off']/100)
 	try:
 		card_details=Card_Details.objects.get(user=user)
 	except:
 		card_details=None
 	#final_amount=order_amount
-	context={'order_amount':order_amount,'offer':offer,'final_amount':final_amount,'merchant':merchant,'user':user,'card_details':card_details}
+	if card_details == None or card_details.account_number == '':
+		#response  = edit(request,{ 'offerId': offer_id, 'order_amount':order_amount })
+		#return response
+		request.session['offerId'] = offer_id
+		request.session['order_amount'] = order_amount
+		return redirect( reverse('consumers_account'), { 'offerId': offer_id, 'order_amount':order_amount })
+	context={'order_amount':order_amount,'offer':offer,'final_amount':final_amount,'merchant':merchant,'user':user,'card_details':card_details, 'discount_off':discount_off}
 	return render(request,'consumers/cons_offer_profile.html',context)
 
 @login_required
@@ -254,8 +269,29 @@ def edit(request):
             card_form.save()
             # request.user.user_merchant.update_location()
             # request.user.user_merchant.save()
+        try:	
+            offer_id = request.session['offerId']
+            order_amount = request.session['order_amount']
+        except:
+            offer_id = None
+            order_amount = None
+
+        if offer_id is not None and order_amount is not None:
+            #del request.session['order_amount']
+            #del request.session['offerId']
+            return redirect(reverse('confirm_order'))
 
     else:
+        try:	
+            offer_id = request.session['offerId']
+            order_amount = request.session['order_amount']
+        except:
+            offer_id = None
+            order_amount = None
+
+        if offer_id is not None and order_amount is not None:
+            messages.add_message(request, messages.INFO, 'Please fill in the Account details below first')
+			
         user_form = ConsumerUserEditForm(instance=request.user)
         profile_form = ConsumerDetailsEditForm(
                                     instance=request.user.user_consumer)
