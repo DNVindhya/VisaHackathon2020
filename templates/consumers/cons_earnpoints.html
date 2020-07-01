@@ -2,8 +2,11 @@
 {% load static %}
 {% block content %}
         <div class="container">
-            <h2 class="border-bottom" id="merchName" style="font-family: inherit; text-decoration: none; font-size: 35px; margin-top: 18px; color: #000; line-height: 1.25; padding-bottom: 20px;"><strong>View Merchants</strong></h2>
-            
+          <center>
+            <h2 id="consTitle"><strong>View Merchants</strong></h2>
+            <p style="font-weight:normal; width: 70%; color: #292929;">Support small local businesses near you using Visa Direct. Purchase through our application to earn karma points and redeem exclusive offers.</p>
+          </center>
+          <hr>
             <div id="searchWrapper">
                 <input
                     type="text"
@@ -52,8 +55,16 @@ h1 {
     font-family: Arbutus Slab, serif; font-weight:bold; color: #000;
 }
 
-#merchName {
-  border: 3px solid black;
+#consTitle {
+  font-family: Arbutus Slab, serif; 
+  text-decoration: none; 
+  font-size: 35px; 
+  margin-top: 18px; 
+  color: #000; 
+  line-height: 1.25; 
+  padding-bottom: 5px; 
+  width: 400px;
+  border: 2px solid black;
 }
 
 #searchBar {

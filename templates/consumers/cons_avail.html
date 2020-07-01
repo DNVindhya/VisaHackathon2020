@@ -3,10 +3,11 @@
     
     {% block content %}
 <center>
-  <h2 class="border-bottom" style="font-family: inherit; text-decoration: none; font-size: 35px; margin-top: 18px; color: #000; line-height: 1.25; padding-bottom: 20px;"><strong>Avail Offers</strong></h2>
+  <h2 id="consTitle"><strong>Redeem Offers</strong></h2>
+  <p style="font-weight:normal; width: 70%; font-family: Arbutus Slab, serif; color: #292929;">Redeem accumulated karma points for exclusive deals with Visa Merchants near you.</p>
+  <hr>  
   <h2 style="text-decoration: none; margin-top: 20px;">Karma Points Balance: <span id="karma_balance">{{user.current_karma_points}}</span></h2>
-<a id="maps-link"><h2 id="location-string">Current Location: Invalid</h2></a>
-<a class="btn btn-dark" onclick="initMap()" style="margin-top: 10px; color: white;">FIND OFFERS NEAR YOU</a>
+  <a id="maps-link"><h2 id="location-string">Current Location: Loading</h2></a>
 </center>
 <div class="container" style="margin-top: 30px;" id="offers-list">
 </div> 
@@ -162,6 +163,19 @@ h4 {
   z-index: 0;
 }
 
+
+#consTitle {
+  font-family: Arbutus Slab, serif; 
+  text-decoration: none; 
+  font-size: 35px; 
+  margin-top: 18px; 
+  color: #000; 
+  line-height: 1.25; 
+  padding-bottom: 5px; 
+  width: 400px;
+  border: 2px solid black;
+}
+
     </style>
 
 <script>
@@ -251,7 +265,14 @@ h4 {
   }
 
 </script>
+<script>
+var kar_bal = '{{user.current_karma_points}}'
+// var user = '{{request.user.user_consumer.current_karma_points}}'
+if (kar_bal == 'None') {
+  kar_bal = 0
+}
+document.getElementById("karma_balance").innerHTML = kar_bal</script>
 <script async defer
-src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCLKMTl60zVE9QesazTh0Mxr8UjVD7THs4">
+src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCLKMTl60zVE9QesazTh0Mxr8UjVD7THs4&callback=initMap">
 </script>
     {% endblock %}
