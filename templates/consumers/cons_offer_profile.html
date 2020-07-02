@@ -512,7 +512,11 @@ span.month.focused.active
                 },
           success: function(response) {
               console.log(response)
-              window.location.href="/customer/payment_success"
+              console.log(response.order)
+              if(response.status == "SUCCESS")
+                console.log(response.order)
+              else
+                console.log("Payment Failed")
           },
           error: function() {
               alert('Error');
