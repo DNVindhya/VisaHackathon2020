@@ -250,7 +250,10 @@ def process_payment(request):
 @login_required
 @consumer_required
 def payment_success(request):
-	context={}
+	orderid=request.POST.get('order')
+	order=Orders.objects.get(id=orderid)
+	merchant=Merchant.objects.get(user_id=order.merchant)
+	context={'order':order,'merchant':merchant.user.first_name}
 	return render(request,'consumers/cons_payment_success.html',context)
 
 @login_required
