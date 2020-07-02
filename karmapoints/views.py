@@ -13,6 +13,7 @@ from karmapoints.forms import ConsumerUserEditForm, ConsumerDetailsEditForm, Con
 from django.contrib.auth import get_user_model, update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib import messages
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 # Create your views here.
 @login_required
@@ -152,7 +153,9 @@ def avail_karma_points(request):
 		dictval={}
 		dictval["merchant"]=merchant.user.first_name
 		if merchant.latitude is not None:
-			dictval["distance"]=geodesic(user_loc, merch_loc).miles
+			distance = float(geodesic(user_loc, merch_loc).miles)
+
+			dictval["distance"]="{:.2f}".format(distance)
 		else:
 			dictval["distance"]=100000
 		dictval["offers"]=list(Offers.objects.filter(merchant=merchant).values())
@@ -173,8 +176,23 @@ def avail_karma_points(request):
 			offer["distance"]=val["distance"]
 			offer_list.append(offer)
 	#print(offer_list)
+	page = request.GET.get('page', 1)
 
-	return JsonResponse(offer_list,safe=False)
+	paginator = Paginator(offer_list, 2)
+	try:
+		offers = paginator.page(page)
+	except PageNotAnInteger:
+		offers = paginator.page(1)
+	except EmptyPage:
+		offers = paginator.page(paginator.num_pages)
+
+	# response = {}
+	# response['']
+	user =request.user.user_consumer
+	current_karma_points = user.current_karma_points
+
+	return render(request,'consumers/cons_avail.html',{ 'offers': offers , 'karma_points': current_karma_points})
+	#return JsonResponse(offer_list,safe=False)
 
 @login_required
 @consumer_required
