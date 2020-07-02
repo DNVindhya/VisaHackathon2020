@@ -91,7 +91,6 @@ def process_payment(request):
 
 	pull_response = api_instance.postpullfunds(pullFundsRequestData)
 
-
 	# Creating Request payload for PushFundsTransaction POST
 	pushFundsRequestData = {}
 
@@ -141,7 +140,7 @@ def process_payment(request):
 		txn.push_approval_code            = push_response.approval_code
 		txn.push_response_code            = push_response.response_code
 		txn.push_transmission_date_time   = push_response.transmission_date_time
-		txn.sender_card_id                = merchantCardPAN
+		txn.recipient_card_id             = merchantCardPAN
 
 		if push_response.action_code == "00":
 			cur_order = Orders()
@@ -157,6 +156,7 @@ def process_payment(request):
 			consumerDetails.save()
 			saved_order = Orders.objects.get(id=cur_order.id)
 			txn.order = saved_order
+			order_details = list(Orders.objects.filter(id=cur_order.id).values())
 			push_success = True
 
 		txn.push_status = action_code_to_txn_status(txn.push_action_code)
@@ -166,7 +166,7 @@ def process_payment(request):
 	if pull_success and push_success:
 		print("Success")
 		message['status'] = "SUCCESS"
-		message['order'] = saved_order
+		message['order'] = order_details[0]
 		message['action_code'] = txn.push_status
 		message['txn_id'] = txn.pull_transaction_identifier
 		return JsonResponse(message,safe=False)
