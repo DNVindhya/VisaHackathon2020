@@ -6,11 +6,49 @@
   <h2 id="consTitle"><strong>Redeem Offers</strong></h2>
   <p style="font-weight:normal; width: 70%; font-family: Arbutus Slab, serif; color: #292929;">Redeem accumulated karma points for exclusive deals with Visa Merchants near you.</p>
   <hr>  
-  <h2 style="text-decoration: none; margin-top: 20px;">Karma Points Balance: <span id="karma_balance">{{user.current_karma_points}}</span></h2>
+  <h2 style="text-decoration: none; margin-top: 20px;">Karma Points Balance: <span id="karma_balance">{{user.current_karma_points}}{{karma_points}}</span></h2>
   <a id="maps-link"><h2 id="location-string">Current Location: View on map</h2></a>
 </center>
 <div class="container" style="margin-top: 30px;" id="offers-list">
+  {% for offer in offers %}
+  <a onclick="modalClick({{offer.karma_points_required}})" data-toggle="modal" data-target="#exampleModal" data-offerid="{{ offer.id }}" data-whatever="{{offer.merchant_name}}" data-karmapoints="{{offer.karma_points_required}}">
+    <div class="card">
+      <div class="child">
+        <h2>{{offer.details}}</h2>
+        <h4>{{offer.merchant_name}}</h4>
+        <p class="karma-para">{{offer.karma_points_required}} Karma Points</p>
+        <p class="karma-para" style="padding-bottom: 20px;">{{offer.distance}} miles</p>
+      </div>
+      <div class="child"></div>
+    </div>
+    </a>
+    {% endfor %}
 </div> 
+
+<div id="pagination-block">
+  {% if offers.has_other_pages %}
+  <ul class="pagination justify-content-center" style="margin:20px 0">
+    {% if offers.has_previous %}
+    <li class="page-item"><a class="page-link" onclick="initMap({{offers.previous_page_number}})" href="#">Previous</a>
+    </li>
+    {% else %}
+    <li class="page-item"><a class="page-link" href='#'>Previous</a></li>
+    {% endif %}
+    {% for i in offers.paginator.page_range %}
+    {% if offers.number == i %}
+    <li class="page-item"><a class="page-link" href='#'>{{ i }}</a></li>
+    {% else %}
+    <li class="page-item"><a class="page-link" href='#' onclick="initMap({{i}})">{{ i }}</a></li>
+    {% endif %}
+    {% endfor %}
+    {% if offers.has_next %}
+    <li class="page-item"><a class="page-link" onclick="initMap({{offers.next_page_number}})" href="#">Next</a></li>
+    {% else %}
+    <li class="page-item"><a class="page-link" href='#'>Next</a></li>
+    {% endif %}
+  </ul>
+  {% endif %}
+</div>
 <!-- Modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
@@ -183,6 +221,15 @@ h4 {
   // prompted by your browser. If you see the error "The Geolocation service
   // failed.", it means you probably did not give permission for the browser to
   // locate you.
+    function modalClick(karma_reqd) {
+      var karma_balance = parseInt(document.getElementById("karma_balance").innerHTML)
+      //var karma_reqd = button.data('whatever')
+      if (karma_balance < karma_reqd) {
+        modal_name = "#exampleModal2"
+        $('#exampleModal2').modal('show');
+
+      }
+    }
 
   $('#exampleModal').on('shown.bs.modal', function (event) {
     var button = $(event.relatedTarget) // Button that triggered the modal
@@ -190,13 +237,21 @@ h4 {
     var offer=button.data('offerid') // Extract info from data-* attributes
     // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
     // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+    
+    var karma_balance = parseInt(document.getElementById("karma_balance").innerHTML)
+    var karma_reqd = button.data('karmapoints')
+    if (karma_balance < karma_reqd) {
+      $('#exampleModal').modal('hide');
+      return
+    }
+    
     var modal = $(this)
     modal.find('#confirmation-msg').text('Confirm order amount and offer validity with ' + recipient)
     modal.find('#offerId').val(offer)
   })
 
   var map, infoWindow;
-  function initMap() {
+  function initMap(pageIn) {
 
     // Try HTML5 geolocation.
     if (navigator.geolocation) {
@@ -212,31 +267,40 @@ h4 {
                   url: "/customer/avail_karma_points",
                   data:{
                            lat:pos['lat'],
-                           lng:pos['lng']
+                           lng:pos['lng'],
+                           page:pageIn
 
                   },
                   success: function( data ) 
                   {
                     console.log('Success:',data[0])
-                    for (var i = 0; i < data.length; i++) {
-                      var modal_name = "#exampleModal"
-                      var karma_balance = parseInt(document.getElementById("karma_balance").innerHTML)
-                      if (karma_balance < data[i]['karma_points_required']) {
-                        modal_name = "#exampleModal2"
-                      }
-                      var htmlString = `<a data-toggle="modal" data-target="${modal_name}" data-offerid="${data[i]['id']}" data-whatever="${data[i]['merchant_name']}">
-                                        <div class="card">
-                                          <div class="child">
-                                            <h2>${data[i]['details']}</h2>
-                                            <h4>${data[i]['merchant_name']}</h4>
-                                            <p class="karma-para">${data[i]['karma_points_required']} Karma Points</p>
-                                            <p class="karma-para" style="padding-bottom: 20px;">${data[i]['distance'].toFixed(1)} miles</p>
-                                          </div>
-                                          <div class="child"></div>
-                                        </div>
-                                        </a>`
-                      document.getElementById('offers-list').innerHTML += htmlString
-                    }
+                    var parser = new DOMParser();
+	                  var doc = parser.parseFromString(data, 'text/html');
+                    var offer_list = doc.getElementById('offers-list').innerHTML
+                    document.getElementById('offers-list').innerHTML = offer_list
+                    var pagination_block = doc.getElementById('pagination-block').innerHTML
+                    document.getElementById('pagination-block').innerHTML = pagination_block
+                    var karma_points = doc.getElementById('karma_balance').innerHTML
+                    document.getElementById('karma_balance').innerHTML = karma_points
+                    // for (var i = 0; i < data.length; i++) {
+                    //   var modal_name = "#exampleModal"
+                    //   var karma_balance = parseInt(document.getElementById("karma_balance").innerHTML)
+                    //   if (karma_balance < data[i]['karma_points_required']) {
+                    //     modal_name = "#exampleModal2"
+                    //   }
+                    //   var htmlString = `<a data-toggle="modal" data-target="${modal_name}" data-offerid="${data[i]['id']}" data-whatever="${data[i]['merchant_name']}">
+                    //                     <div class="card">
+                    //                       <div class="child">
+                    //                         <h2>${data[i]['details']}</h2>
+                    //                         <h4>${data[i]['merchant_name']}</h4>
+                    //                         <p class="karma-para">${data[i]['karma_points_required']} Karma Points</p>
+                    //                         <p class="karma-para" style="padding-bottom: 20px;">${data[i]['distance'].toFixed(1)} miles</p>
+                    //                       </div>
+                    //                       <div class="child"></div>
+                    //                     </div>
+                    //                     </a>`
+                    //   document.getElementById('offers-list').innerHTML += htmlString
+                    // }
                   }
                })
 

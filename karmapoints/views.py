@@ -13,6 +13,7 @@ from karmapoints.forms import ConsumerUserEditForm, ConsumerDetailsEditForm, Con
 from django.contrib.auth import get_user_model, update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib import messages
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 # Create your views here.
 @login_required
@@ -106,7 +107,7 @@ def earn_karma_points(request):
 		dictval["offers"]=list(Offers.objects.filter(merchant=merchant).values())
 		listofmerchants.append(dictval)
 	print(listofmerchants)
-	return JsonResponse(listofmerchants,safe=False);
+	return JsonResponse(listofmerchants,safe=False)
 
 
 @login_required
@@ -124,8 +125,8 @@ def earn_offers(request, pk):
 @login_required
 @consumer_required
 def avail_karma_points(request):
-	latitude=request.GET.get('lat');
-	longitude=request.GET.get('lng');
+	latitude=request.GET.get('lat')
+	longitude=request.GET.get('lng')
 	user=request.user.user_consumer
 	user.curr_lat=latitude
 	user.curr_long=longitude
@@ -152,7 +153,9 @@ def avail_karma_points(request):
 		dictval={}
 		dictval["merchant"]=merchant.user.first_name
 		if merchant.latitude is not None:
-			dictval["distance"]=geodesic(user_loc, merch_loc).miles
+			distance = float(geodesic(user_loc, merch_loc).miles)
+
+			dictval["distance"]="{:.2f}".format(distance)
 		else:
 			dictval["distance"]=100000
 		dictval["offers"]=list(Offers.objects.filter(merchant=merchant).values())
@@ -173,14 +176,30 @@ def avail_karma_points(request):
 			offer["distance"]=val["distance"]
 			offer_list.append(offer)
 	#print(offer_list)
+	page = request.GET.get('page', 1)
 
-	return JsonResponse(offer_list,safe=False)
+	paginator = Paginator(offer_list, 10)
+	try:
+		offers = paginator.page(page)
+	except PageNotAnInteger:
+		offers = paginator.page(1)
+	except EmptyPage:
+		offers = paginator.page(paginator.num_pages)
+
+	# response = {}
+	# response['']
+	user =request.user.user_consumer
+	current_karma_points = user.current_karma_points
+
+	return render(request,'consumers/cons_avail.html',{ 'offers': offers , 'karma_points': current_karma_points})
+	#return JsonResponse(offer_list,safe=False)
 
 @login_required
 @consumer_required
 def confirm_order(request):
 	user=request.user
-	
+
+	offer_id = None
 	if request.POST.get('offerId'):
 		#print("confirm_order_view")
 		offer_id=request.POST.get('offerId')
@@ -204,8 +223,15 @@ def confirm_order(request):
 		karma_used = offer.karma_points_required
 
 	else:
-		order_amount=float(request.POST.get('order_amount'))
+		order_amount=request.POST.get('order_amount')
 		merchant_id=request.POST.get('merchantId')
+		if order_amount == None:
+			order_amount = request.session['order_amount']
+			merchant_id = request.session['merchant_id']
+			if order_amount is not None:
+				del request.session['order_amount']
+				del request.session['merchant_id']
+		order_amount = float(order_amount)
 		merchant = Merchant.objects.get(user_id = merchant_id)
 		offer = "False"
 		final_amount = order_amount
@@ -216,7 +242,7 @@ def confirm_order(request):
 	#print(offer['percentage_off'])
 	#print(type(offer['percentage_off']))
 	#print(type(order_amount))
-	karma_earned = final_amount * 0.35
+	karma_earned = round(final_amount * 0.30)
 	try:
 		card_details=Card_Details.objects.get(user=user)
 	except:
@@ -227,6 +253,7 @@ def confirm_order(request):
 		#return response
 		request.session['offerId'] = offer_id
 		request.session['order_amount'] = order_amount
+		request.session['merchant_id'] = merchant_id
 		return redirect( reverse('consumers_account'), { 'offerId': offer_id, 'order_amount':order_amount })
 	context={'order_amount':order_amount,'offer':offer,'final_amount':final_amount,'merchant':merchant,'user':user,'card_details':card_details, 'discount_off':discount_off, 'karma_earned': karma_earned, 'percentage_off': percentage_off, 'karma_used': karma_used}
 	return render(request,'consumers/cons_offer_profile.html',context)
@@ -245,12 +272,15 @@ def process_payment(request):
 	print(merchant)
 	print(offer)
 	print(card_details)
-	return JsonResponse('Payment Complete',safe=False);
+	return JsonResponse('Payment Complete',safe=False)
 
 @login_required
 @consumer_required
 def payment_success(request):
-	context={}
+	orderid=request.POST.get('order')
+	order=Orders.objects.get(id=orderid)
+	merchant=Merchant.objects.get(user_id=order.merchant)
+	context={'order':order,'merchant':merchant.user.first_name}
 	return render(request,'consumers/cons_payment_success.html',context)
 
 @login_required
@@ -280,7 +310,7 @@ def edit(request):
             offer_id = None
             order_amount = None
 
-        if offer_id is not None and order_amount is not None:
+        if order_amount is not None:
             #del request.session['order_amount']
             #del request.session['offerId']
             return redirect(reverse('confirm_order'))
@@ -293,7 +323,7 @@ def edit(request):
             offer_id = None
             order_amount = None
 
-        if offer_id is not None and order_amount is not None:
+        if order_amount is not None:
             messages.add_message(request, messages.INFO, 'Please fill in the Account details below first')
 			
         user_form = ConsumerUserEditForm(instance=request.user)

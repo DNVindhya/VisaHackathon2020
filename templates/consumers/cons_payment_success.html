@@ -8,12 +8,12 @@
     <hr>
     <div style="width: 40%; margin-top: 40px;">
         <ul style="list-style-type: none; font-family: Open Sans, serif; color: #292929; text-align: left;">
-            <li>Date: </li>
-            <li>Payment Amount: </li>
-            <li>Merchant Name: </li>
-            <li>Karma Points Earned: </li>
-            <li>Karma Points Used: </li>
-            <li>Discount Amount: </li>
+            <li><strong>Date                 : </strong>{{order.order_date}}</li>
+            <li><strong>Payment Amount       : </strong>{{order.order_amount}}</li>
+            <li><strong>Merchant Name        : </strong>{{merchant}}</li>
+            <li><strong>Karma Points Earned  : </strong>{{order.karma_points_earned}}</li>
+            <li><strong>Karma Points Used    : </strong>{{order.karma_points_used}}</li>
+            <li><strong>Discount Amount      : </strong>{{order.discount_amount}}</li>
         </ul>
     </div>
     <a class="btn btn-dark" href="/customer/view_orders" role="button" style="text-decoration: none; margin-top: 20px;">View all past orders</a>
@@ -23,4 +23,7 @@
     <style>
 @import url("https://fonts.googleapis.com/css?family=Arbutus+Slab|Open+Sans&display=swap");
     </style>
+    <script>
+        console.log('{{dummy}}')
+    </script>
     {% endblock %}

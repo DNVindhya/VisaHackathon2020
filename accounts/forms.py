@@ -46,6 +46,9 @@ class ConsumerSignUpForm(UserCreationForm):
         user.is_consumer = True
         user.save()
         Consumer.objects.create(user=user)
+        consumer=Consumer.objects.get(user_id=user)
+        consumer.current_karma_points=50
+        consumer.save()
         return user
 
 class MerchantUserEditForm(forms.ModelForm):

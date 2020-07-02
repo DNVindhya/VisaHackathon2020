@@ -18,7 +18,7 @@ class User(AbstractUser):
     
 class Consumer(models.Model):
 	user = models.OneToOneField(User, related_name="user_consumer", on_delete=models.CASCADE, primary_key=True)
-	contact_number = models.IntegerField(null=True)
+	contact_number = models.IntegerField(null=True, blank=True)
 	address = models.CharField(max_length = 200, null = True, blank=True)
 	current_karma_points = models.IntegerField(null = True, blank=True)
 	date_created = models.DateTimeField(auto_now_add= True, null = True)
@@ -36,13 +36,7 @@ class Merchant(models.Model):
     address = models.CharField(max_length = 200, null = True)
     city = models.CharField(max_length = 200, null = True)
     state = models.CharField(max_length = 200, null = True)
-    #country = CountryField(multiple=False)
-    #state = USStateField('state')
     zip_code = models.CharField('zip code',null= True, max_length=5)
-    #card_details = CardNumberField('card number')
-    #cc_expiry = CardExpiryField('expiration date')
-    #cc_code = SecurityCodeField('security code')
-    #card_details = models.IntegerField(null = True)
     date_created = models.DateTimeField(auto_now_add= True, null = True)
     latitude = models.DecimalField(max_digits=22, decimal_places=16,null=True,blank=True)
     longitude = models.DecimalField(max_digits=22, decimal_places=16,null=True,blank=True) 
@@ -60,7 +54,7 @@ class Merchant(models.Model):
             print ("Longitude:", self.longitude)
             
     def __str__(self):
-        return self.user.username
+        return self.user.first_name
 
 class Card_Details(models.Model):
 	user = models.OneToOneField(User, on_delete=models.CASCADE)

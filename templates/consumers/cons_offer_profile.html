@@ -118,7 +118,7 @@
                                     </div>
                                     <div class="col-12 panel-footer creditcard-footer">
                                         <div class="row">
-                                            <div class="col-12 align-right"><button class="cancel">Cancel</button>&nbsp;<button class="confirm" id="proceed_to_payment">Confirm & Pay</button></div>
+                                            <div class="col-12 align-right"><button class="cancel" onclick="goBack()">Cancel</button>&nbsp;<button class="confirm" id="proceed_to_payment">Confirm & Pay</button></div>
                                         </div>
                                     </div>
                                 </div>
@@ -129,6 +129,9 @@
             </div>
         </div>
     </div>
+    <form style="display: none" action="/customer/payment_success/" method="POST" id="payment_success_receipt">{% csrf_token %}
+      <input type="hidden" id="order" name="order" value=""/>
+    </form>
     <!-- <a data-toggle="modal" data-target="#exampleModal" href="">Failure Modal</a> -->
 <!-- Modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -511,8 +514,25 @@ span.month.focused.active
                   csrfmiddlewaretoken: '{{ csrf_token }}'
                 },
           success: function(response) {
-              console.log(response)
-              window.location.href="/customer/payment_success"
+              //console.log(response)
+              //console.log(response.order)
+              if(response.status == "SUCCESS"){
+                //console.log(response.order)
+                /*var myRedirect = function(redirectUrl, arg, value) {
+                  var form = $('<form action="' + redirectUrl + '" method="POST">' +
+                  '<input type="hidden" name="'+ arg +'" value="' + value + '"></input>' + '</form>');
+                  $('body').append(form);
+                  $(form).submit();
+                };
+                myRedirect("/customer/payment_success/", "order", response);*/
+                //console.log("CHeckkk")
+                //console.log(response['order']['order_amount'])
+                $("#order").val(response['order']['id']);
+                $("#payment_success_receipt").submit();
+              }else
+                //console.log("Payment Failed")
+                $('#exampleModal').modal('show');
+
           },
           error: function() {
               alert('Error');
@@ -569,6 +589,11 @@ span.month.focused.active
 <script>
     if('{{offer}}' == "False") {
         document.getElementById("offer_desc").innerHTML = ""
+    }
+</script>
+<script>
+    function goBack() {
+      window.history.back();
     }
 </script>
     {% endblock %}
