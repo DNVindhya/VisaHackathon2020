@@ -216,7 +216,7 @@ def confirm_order(request):
 	#print(offer['percentage_off'])
 	#print(type(offer['percentage_off']))
 	#print(type(order_amount))
-	karma_earned = final_amount * 0.35
+	karma_earned = round(final_amount * 0.30)
 	try:
 		card_details=Card_Details.objects.get(user=user)
 	except:

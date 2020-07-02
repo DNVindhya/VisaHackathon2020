@@ -63,7 +63,10 @@ def process_payment(request):
 	cardDetails     = Card_Details.objects.get(id=cardId)
 	merchantDetails = Merchant.objects.get(user_id=merchantId)
 	consumerDetails = Consumer.objects.get(user_id=consumerId)
-	offerDetails    = Offers.objects.get(id=offerId)
+	try:
+		offerDetails    = Offers.objects.get(id=offerId)
+	except:
+		offerDetails = None
 
 	
 	# Creating Request payload for PullFundsTransaction POST
@@ -152,8 +155,11 @@ def process_payment(request):
 			cur_order.offer    = offerDetails
 			cur_order.order_amount = float(ord_amount)
 			cur_order.discount_amount = float(amount)
-			cur_order.karma_points_used = offerDetails.karma_points_required
-			cur_order.karma_points_earned = round((0.05) * float(amount))
+			try:
+				cur_order.karma_points_used = offerDetails.karma_points_required
+			except:
+				cur_order.karma_points_used = 0
+			cur_order.karma_points_earned = round((0.30) * float(amount))
 			consumerDetails.current_karma_points = consumerDetails.current_karma_points - cur_order.karma_points_used + cur_order.karma_points_earned
 			cur_order.save()
 			consumerDetails.save()

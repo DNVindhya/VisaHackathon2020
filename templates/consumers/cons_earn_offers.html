@@ -175,7 +175,7 @@ h4 {
         modal.find('#confirmation-msg').text('Confirm order amount and offer validity with ' + recipient)
         modal.find('#offerId').val(offer)
       })
-        var htmlLink = "http://maps.google.com/?q=" + "{{merchant_address}}";
+        var htmlLink = "http://maps.google.com/?q=" + "{{merchant.address}}";
         console.log("{{merchant_address}}")
         document.getElementById("maps-link").setAttribute("href", htmlLink);
         document.getElementById("maps-link").setAttribute("target", "__blank");
