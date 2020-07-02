@@ -106,8 +106,9 @@ def earn_karma_points(request):
 			dictval["distance"]=100000
 		dictval["offers"]=list(Offers.objects.filter(merchant=merchant).values())
 		listofmerchants.append(dictval)
+	listofmerchants = sorted(listofmerchants, key=lambda x: x['distance'])
 	print(listofmerchants)
-	return JsonResponse(listofmerchants,safe=False);
+	return JsonResponse(listofmerchants,safe=False)
 
 
 @login_required
@@ -125,8 +126,8 @@ def earn_offers(request, pk):
 @login_required
 @consumer_required
 def avail_karma_points(request):
-	latitude=request.GET.get('lat');
-	longitude=request.GET.get('lng');
+	latitude=request.GET.get('lat')
+	longitude=request.GET.get('lng')
 	user=request.user.user_consumer
 	user.curr_lat=latitude
 	user.curr_long=longitude
@@ -178,7 +179,7 @@ def avail_karma_points(request):
 	#print(offer_list)
 	page = request.GET.get('page', 1)
 
-	paginator = Paginator(offer_list, 2)
+	paginator = Paginator(offer_list, 10)
 	try:
 		offers = paginator.page(page)
 	except PageNotAnInteger:
@@ -198,32 +199,43 @@ def avail_karma_points(request):
 @consumer_required
 def confirm_order(request):
 	user=request.user
-	
+
+	offer_id = None
 	if request.POST.get('offerId'):
 		#print("confirm_order_view")
 		offer_id=request.POST.get('offerId')
+		#merchant_id=request.POST.get('merchantId')
 		order_amount=request.POST.get('order_amount')
 		if offer_id == None and order_amount == None:
 			offer_id = request.session['offerId']
 			order_amount = request.session['order_amount']
-
+			merchant_id = request.session['merchant_id']
 			if offer_id is not None and order_amount is not None:
 				del request.session['order_amount']
 				del request.session['offerId']
+				del request.session['merchant_id']
 		order_amount = float(order_amount)
 		# print(offer_id)
 		offer1 = list(Offers.objects.filter(id=offer_id).values())[0]
 		offer = Offers.objects.get(id = offer_id)
 		print(offer1)
 		merchant = Merchant.objects.get(user_id = offer1['merchant_id'])
+		merchant_id = offer1['merchant_id']
 		final_amount=order_amount-(order_amount*offer1['percentage_off']/100)
 		discount_off = (order_amount*offer1['percentage_off']/100)
 		percentage_off = offer.percentage_off
 		karma_used = offer.karma_points_required
 
 	else:
-		order_amount=float(request.POST.get('order_amount'))
+		order_amount=request.POST.get('order_amount')
 		merchant_id=request.POST.get('merchantId')
+		if order_amount == None:
+			order_amount = request.session['order_amount']
+			merchant_id = request.session['merchant_id']
+			if order_amount is not None:
+				del request.session['order_amount']
+				del request.session['merchant_id']
+		order_amount = float(order_amount)
 		merchant = Merchant.objects.get(user_id = merchant_id)
 		offer = "False"
 		final_amount = order_amount
@@ -245,6 +257,7 @@ def confirm_order(request):
 		#return response
 		request.session['offerId'] = offer_id
 		request.session['order_amount'] = order_amount
+		request.session['merchant_id'] = merchant_id
 		return redirect( reverse('consumers_account'), { 'offerId': offer_id, 'order_amount':order_amount })
 	context={'order_amount':order_amount,'offer':offer,'final_amount':final_amount,'merchant':merchant,'user':user,'card_details':card_details, 'discount_off':discount_off, 'karma_earned': karma_earned, 'percentage_off': percentage_off, 'karma_used': karma_used}
 	return render(request,'consumers/cons_offer_profile.html',context)
@@ -263,7 +276,7 @@ def process_payment(request):
 	print(merchant)
 	print(offer)
 	print(card_details)
-	return JsonResponse('Payment Complete',safe=False);
+	return JsonResponse('Payment Complete',safe=False)
 
 @login_required
 @consumer_required
@@ -301,7 +314,7 @@ def edit(request):
             offer_id = None
             order_amount = None
 
-        if offer_id is not None and order_amount is not None:
+        if order_amount is not None:
             #del request.session['order_amount']
             #del request.session['offerId']
             return redirect(reverse('confirm_order'))
@@ -314,7 +327,7 @@ def edit(request):
             offer_id = None
             order_amount = None
 
-        if offer_id is not None and order_amount is not None:
+        if order_amount is not None:
             messages.add_message(request, messages.INFO, 'Please fill in the Account details below first')
 			
         user_form = ConsumerUserEditForm(instance=request.user)

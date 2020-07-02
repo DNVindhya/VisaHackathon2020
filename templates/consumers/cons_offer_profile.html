@@ -22,9 +22,6 @@
                                             <div class="col-6 basket-title">
                                                 <span class="description">review your</span><br><span class="emphasized">Order Summary</span>
                                             </div>
-                                            <div class="col-6 order-number align-right">
-                                                <span class="description">order id#</span><br><span class="emphasized">{{offer.id}}</span>
-                                            </div>
                                         </div>                      
                                     </div>
                                     <div class="col-12 panel-body basket-body">
@@ -118,7 +115,7 @@
                                     </div>
                                     <div class="col-12 panel-footer creditcard-footer">
                                         <div class="row">
-                                            <div class="col-12 align-right"><button class="cancel">Cancel</button>&nbsp;<button class="confirm" id="proceed_to_payment">Confirm & Pay</button></div>
+                                            <div class="col-12 align-right"><button class="cancel" onclick="goBack()">Cancel</button>&nbsp;<button class="confirm" id="proceed_to_payment">Confirm & Pay</button></div>
                                         </div>
                                     </div>
                                 </div>
@@ -589,6 +586,11 @@ span.month.focused.active
 <script>
     if('{{offer}}' == "False") {
         document.getElementById("offer_desc").innerHTML = ""
+    }
+</script>
+<script>
+    function goBack() {
+      window.history.back();
     }
 </script>
     {% endblock %}
