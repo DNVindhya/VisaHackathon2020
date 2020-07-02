@@ -203,14 +203,16 @@ def confirm_order(request):
 	if request.POST.get('offerId'):
 		#print("confirm_order_view")
 		offer_id=request.POST.get('offerId')
+		merchant_id=request.POST.get('merchantId')
 		order_amount=request.POST.get('order_amount')
 		if offer_id == None and order_amount == None:
 			offer_id = request.session['offerId']
 			order_amount = request.session['order_amount']
-
+			merchant_id = request.session['merchant_id']
 			if offer_id is not None and order_amount is not None:
 				del request.session['order_amount']
 				del request.session['offerId']
+				del request.session['merchant_id']
 		order_amount = float(order_amount)
 		# print(offer_id)
 		offer1 = list(Offers.objects.filter(id=offer_id).values())[0]
