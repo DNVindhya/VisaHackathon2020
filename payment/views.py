@@ -22,9 +22,9 @@ def process_payment(request):
 	config = Configuration()
 	config.username = '7SG6JCVBQX19D3ZTE9DX21Wd2mK1qDfxz6f65yFcCraHniopc'
 	config.password = 'k3BVYK02PpAm27D82xwPf6dUkpmA2T282YYf8c'
-	config.cert_file = '/Users/dnv/Downloads/visa_direct/myApp/custom_store/cert.pem'
-	config.key_file = '/Users/dnv/Downloads/visa_direct/myApp/custom_store/key_4212dd3b-5b2a-4e00-b50d-4f227d4412af.pem'
-	config.ssl_ca_cert = '/Users/dnv/Downloads/visa_direct/myApp/DigiCertGlobalRootCA.pem'	
+	config.cert_file = '/Users/yeti/Downloads/cert/cert.pem'
+	config.key_file = '/Users/yeti/Downloads/cert/key_4212dd3b-5b2a-4e00-b50d-4f227d4412af.pem'
+	config.ssl_ca_cert = '/Users/yeti/Downloads/cert/DigiCertGlobalRootCA.pem'	
 
 	# Data available to Originator in Funds Transfer
 	acquirerCountryCode = "840"
