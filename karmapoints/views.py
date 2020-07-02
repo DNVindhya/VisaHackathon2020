@@ -106,6 +106,7 @@ def earn_karma_points(request):
 			dictval["distance"]=100000
 		dictval["offers"]=list(Offers.objects.filter(merchant=merchant).values())
 		listofmerchants.append(dictval)
+	listofmerchants = sorted(listofmerchants, key=lambda x: x['distance'])
 	print(listofmerchants)
 	return JsonResponse(listofmerchants,safe=False)
 
@@ -203,7 +204,7 @@ def confirm_order(request):
 	if request.POST.get('offerId'):
 		#print("confirm_order_view")
 		offer_id=request.POST.get('offerId')
-		merchant_id=request.POST.get('merchantId')
+		#merchant_id=request.POST.get('merchantId')
 		order_amount=request.POST.get('order_amount')
 		if offer_id == None and order_amount == None:
 			offer_id = request.session['offerId']
@@ -219,6 +220,7 @@ def confirm_order(request):
 		offer = Offers.objects.get(id = offer_id)
 		print(offer1)
 		merchant = Merchant.objects.get(user_id = offer1['merchant_id'])
+		merchant_id = offer1['merchant_id']
 		final_amount=order_amount-(order_amount*offer1['percentage_off']/100)
 		discount_off = (order_amount*offer1['percentage_off']/100)
 		percentage_off = offer.percentage_off
