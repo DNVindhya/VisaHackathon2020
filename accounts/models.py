@@ -18,7 +18,7 @@ class User(AbstractUser):
     
 class Consumer(models.Model):
 	user = models.OneToOneField(User, related_name="user_consumer", on_delete=models.CASCADE, primary_key=True)
-	contact_number = models.IntegerField(null=True)
+	contact_number = models.IntegerField(null=True, blank=True)
 	address = models.CharField(max_length = 200, null = True, blank=True)
 	current_karma_points = models.IntegerField(null = True, blank=True)
 	date_created = models.DateTimeField(auto_now_add= True, null = True)
