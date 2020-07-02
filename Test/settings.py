@@ -39,11 +39,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'admin-panel',
     'offers',
     'karmapoints',
     'accounts',
     'crispy_forms', #3rd party
+    'payment',
 ]
 
 MIDDLEWARE = [
