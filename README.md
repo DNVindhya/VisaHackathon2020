@@ -1,5 +1,4 @@
-# VisaHackathon2020
-Visa Payments and Pandemic Hackathon
+# Visa Payments and Pandemic Hackathon 2020
 
 Project name - Covid Support by Visa
 By team - COVID19Off
@@ -7,10 +6,11 @@ By team - COVID19Off
 Python3 is required
 
 For installing Python packages:
-pip3 install -r requirements.txt
+> pip3 install -r requirements.txt
 
 To run the server:
-python3 manage.py runserver
+> python3 manage.py runserver
+
 And then use localhost:8000 to see the project on local server 
 
 For End to end tests:
